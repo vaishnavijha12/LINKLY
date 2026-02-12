@@ -136,17 +136,17 @@ const Home = () => {
                     {/* Main Content Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
                         {/* LEFT: Content & Tool (Expansive) */}
-                        <div className="space-y-10 lg:pr-12">
+                        <div className="space-y-8 lg:pr-12">
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                className="space-y-6 text-center lg:text-left"
+                                className="space-y-4 text-center lg:text-left"
                             >
-                                <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.1] tracking-tight">
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.1] tracking-tight">
                                     Shorten with <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-light">Vision.</span>
                                 </h1>
-                                <p className="text-xl md:text-2xl text-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+                                <p className="text-lg md:text-xl text-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
                                     Turn long, cluttered links into beautiful, trackable assets. Built for impact and visibility.
                                 </p>
                             </motion.div>
@@ -166,7 +166,7 @@ const Home = () => {
                                                 value={url}
                                                 onChange={(e) => setUrl(e.target.value)}
                                                 onKeyDown={(e) => e.key === 'Enter' && handleShorten(e)}
-                                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-xl pr-16 shadow-2xl backdrop-blur-sm"
+                                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-lg pr-16 shadow-2xl backdrop-blur-sm"
                                                 disabled={loading}
                                             />
                                             <button
@@ -185,14 +185,14 @@ const Home = () => {
                                                     placeholder="Tag (optional)"
                                                     value={tag}
                                                     onChange={(e) => setTag(e.target.value)}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/40 transition-all text-base pr-12 backdrop-blur-sm"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-3.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/40 transition-all text-sm pr-12 backdrop-blur-sm"
                                                     disabled={loading}
                                                 />
                                                 <Tag size={18} className="absolute right-5 top-1/2 -translate-y-1/2 text-tertiary group-focus-within:text-accent transition-colors" />
                                             </div>
                                             <button
                                                 onClick={() => setIsModalOpen(true)}
-                                                className="px-8 py-4 bg-glass-bg border border-glass-border rounded-2xl text-secondary hover:text-white hover:border-accent/50 transition-all text-sm font-bold uppercase tracking-widest backdrop-blur-sm shadow-xl"
+                                                className="px-6 py-3.5 bg-glass-bg border border-glass-border rounded-2xl text-secondary hover:text-white hover:border-accent/50 transition-all text-xs font-bold uppercase tracking-widest backdrop-blur-sm shadow-xl"
                                             >
                                                 Branded Link
                                             </button>
