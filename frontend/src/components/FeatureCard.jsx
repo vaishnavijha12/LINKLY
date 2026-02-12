@@ -10,14 +10,14 @@ const FeatureCard = ({ title, description, icon: Icon, link, onClick, index = 0 
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.2 } }}
-            className="group/card glass-panel p-10 rounded-3xl hover:border-accent/30 hover:shadow-glow-purple transition-all duration-200 h-full flex flex-col justify-between cursor-pointer relative overflow-hidden"
+            className="group/card glass-panel p-6 rounded-3xl hover:border-accent/30 hover:shadow-glow-purple transition-all duration-200 h-full flex flex-col justify-between cursor-pointer relative overflow-hidden"
         >
             <div className="relative z-10">
                 {/* Icon with circular gradient background */}
-                <div className="mb-6 w-14 h-14 rounded-full bg-gradient-to-br from-accent/20 to-accent-dark/20 flex items-center justify-center group-hover/card:shadow-glow-purple-sm transition-all duration-200">
-                    <Icon size={28} strokeWidth={1.5} className="text-accent-light group-hover/card:text-accent transition-colors duration-200" />
+                <div className="mb-6 w-12 h-12 rounded-full bg-gradient-to-br from-accent/20 to-accent-dark/20 flex items-center justify-center group-hover/card:shadow-glow-purple-sm transition-all duration-200">
+                    <Icon size={24} strokeWidth={1.5} className="text-accent-light group-hover/card:text-accent transition-colors duration-200" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-4 group-hover/card:text-accent-light transition-colors duration-200">{title}</h3>
+                <h3 className="text-lg font-semibold text-white mb-4 group-hover/card:text-accent-light transition-colors duration-200">{title}</h3>
                 <p className="text-secondary text-base leading-relaxed group-hover/card:text-white/80 transition-colors duration-200">{description}</p>
             </div>
 

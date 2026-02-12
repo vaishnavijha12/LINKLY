@@ -304,7 +304,7 @@ const Home = () => {
             {/* Continue with existing sections below */}
             <div className="relative z-10 max-w-5xl mx-auto px-6">
                 {/* SECTION 2: CONTEXT */}
-                <section className="py-40 flex flex-col items-center text-center">
+                <section className="py-20 flex flex-col items-center text-center">
                     <h2 className="text-section md:text-section-lg font-semibold mb-6 text-white">
                         This is more than a short link.
                     </h2>
@@ -315,14 +315,14 @@ const Home = () => {
                 </section>
 
                 {/* SECTION 3: EXPLORE FEATURES */}
-                <section className="py-40">
-                    <div className="mb-20">
+                <section className="py-20">
+                    <div className="mb-12">
                         <h2 className="text-section md:text-section-lg font-semibold text-white">
                             Explore Features
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature, index) => (
                             <FeatureCard key={index} {...feature} index={index} />
                         ))}
@@ -330,7 +330,7 @@ const Home = () => {
                 </section>
 
                 {/* SECTION 4: QUICK ACCESS / FLOW */}
-                <section className="py-40 flex flex-col items-center text-center">
+                <section className="py-20 flex flex-col items-center text-center">
                     <h3 className="text-2xl font-medium text-white mb-10">Pick a tool to continue.</h3>
                     <div className="flex gap-5">
                         <Link

@@ -11,9 +11,13 @@ import authRoute from './src/routes/auth.route.js';
 
 dotenv.config();
 
-const app = express();   // ✅ app defined FIRST
+const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*", // In production, replace with your Vercel frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
