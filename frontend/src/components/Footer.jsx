@@ -68,7 +68,7 @@ const Footer = ({ onOpenHelp }) => {
                     <div className="flex items-center gap-8">
                         <span className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-glow-purple-sm"></div>
-                            <span className="text-secondary text-[9px] uppercase tracking-widest font-bold">Systems Operational</span>
+                            <span className="text-secondary text-[8px] uppercase tracking-wider font-medium">Systems Operational</span>
                         </span>
                     </div>
                 </div>
