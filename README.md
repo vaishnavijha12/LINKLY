@@ -5,7 +5,7 @@
 
 Create clean short links, generate QR codes, organize with tags, and track usage — all from one modern dashboard.
 
-[Live Demo](#) • [Report Bug](#) • [Request Feature](#)
+
 
 ---
 
