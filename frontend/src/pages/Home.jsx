@@ -266,9 +266,9 @@ const Home = () => {
                                             opacity: { duration: 0.3 }
                                         }}
                                         className={`absolute w-full max-w-[480px] aspect-[4/5] rounded-[48px] p-12 transition-colors duration-500 transform-gpu cursor-pointer
-                                            ${isActive ? 'z-30 bg-gradient-to-br from-accent/10 to-black/90 border border-accent/30 shadow-glow-purple ring-1 ring-accent/20' :
-                                                isNext ? 'z-20 bg-accent/5 border border-glass-border shadow-xl' :
-                                                    'z-10 bg-glass-bg/10 border-none shadow-none grayscale-0 opacity-10'}`}
+                                            ${isActive ? 'z-30 bg-[#121217] border border-accent/40 shadow-glow-purple ring-1 ring-accent/20' :
+                                                isNext ? 'z-20 bg-[#1a1a21] border border-glass-border shadow-xl' :
+                                                    'z-10 bg-[#0a0a0c] border-none shadow-none grayscale-0 opacity-10'}`}
                                         style={{ transformStyle: 'preserve-3d' }}
                                     >
                                         {/* Dynamic Content based on which card is at the index */}
@@ -288,8 +288,8 @@ const Home = () => {
                                                         <p className="text-secondary text-lg font-medium leading-[1.6]">Performance-optimized branded links for global distribution.</p>
                                                     </div>
                                                 </div>
-                                                <div className="bg-accent/5 border border-accent/20 rounded-[32px] p-6 shadow-2xl mt-8 ring-1 ring-white/10">
-                                                    <div className="w-full h-40 bg-black/40 flex items-center justify-center border-2 border-dashed border-accent/20 rounded-2xl">
+                                                <div className="bg-[#1c1c24] border border-accent/20 rounded-[32px] p-6 shadow-2xl mt-8 ring-1 ring-white/10">
+                                                    <div className="w-full h-40 bg-[#0f0f12] flex items-center justify-center border-2 border-dashed border-accent/20 rounded-2xl">
                                                         <Globe size={64} className="text-accent/20 animate-pulse" />
                                                     </div>
                                                 </div>
@@ -343,8 +343,8 @@ const Home = () => {
                                                 </div>
                                                 <div className="space-y-4">
                                                     {[1, 2, 3].map((_, i) => (
-                                                        <div key={i} className="flex items-center justify-between bg-accent/5 rounded-2xl px-6 py-4 border border-accent/10 ring-1 ring-white/5">
-                                                            <div className="w-2/3 h-2 bg-accent/20 rounded-full"></div>
+                                                        <div key={i} className="flex items-center justify-between bg-[#1c1c24] rounded-2xl px-6 py-4 border border-accent/10 ring-1 ring-white/5">
+                                                            <div className="w-2/3 h-2 bg-accent/40 rounded-full"></div>
                                                             <Check size={18} className="text-green-400" />
                                                         </div>
                                                     ))}
