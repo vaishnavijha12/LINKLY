@@ -7,7 +7,7 @@ import { User, Mail, Lock, Save, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-    const { user, loading: authLoading } = useContext(AuthContext);
+    const { user, loading: authLoading, updateUser } = useContext(AuthContext);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -27,9 +27,8 @@ const Profile = () => {
         try {
             const res = await api.put("/auth/profile", { username, email, password });
             toast.success(res.data.message);
-            // We need to update local storage and potentially the context
-            localStorage.setItem("username", username);
-            window.location.reload(); // Hard reload to sync everything for now
+            updateUser({ username, email });
+            setPassword(""); // Clear password field
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to update profile");
         } finally {
