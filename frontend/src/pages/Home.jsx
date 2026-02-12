@@ -122,10 +122,10 @@ const Home = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="max-w-6xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass overflow-hidden"
+                    className="max-w-7xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass overflow-hidden"
                 >
                     {/* Main Split Panel - Tool Card + Preview */}
-                    <div className="grid grid-cols-1 md:grid-cols-[55%_45%] gap-10 p-10 items-center min-h-[500px]">
+                    <div className="grid grid-cols-1 md:grid-cols-[52%_48%] gap-0 p-8 md:p-12 items-center min-h-[550px]">
                         {/* LEFT: Tool Card (55%) */}
                         <div className="space-y-6">
                             <div>
@@ -222,79 +222,108 @@ const Home = () => {
                             )}
                         </div>
 
-                        <div className="hidden md:flex items-center justify-center">
+                        <div className="hidden md:flex items-center justify-center relative h-full min-h-[400px]">
                             <motion.div
-                                initial={{ opacity: 0, rotateY: -15, scale: 0.9 }}
-                                animate={{ opacity: 1, rotateY: 0, scale: 1 }}
-                                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                                className="relative w-full max-w-md"
-                                style={{ perspective: '1000px' }}
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.8, delay: 0.3 }}
+                                className="relative w-full h-fit flex items-center justify-center"
+                                style={{ perspective: '1200px' }}
                             >
-                                {/* Ambient glow */}
-                                <div className="absolute inset-0 bg-accent/20 rounded-2xl blur-[60px] -z-10"></div>
-
-                                {/* Contextual Analytics Preview Card */}
-                                <div
-                                    className="bg-gradient-to-br from-glass-bg to-black/60 border border-glass-border rounded-2xl p-6 shadow-2xl backdrop-blur-glass"
-                                    style={{ transform: 'rotateY(-5deg) rotateX(2deg)' }}
+                                {/* Card 3: Bottom Layer (Success/System) */}
+                                <motion.div
+                                    animate={{
+                                        y: [0, -10, 0],
+                                        rotateX: [2, 4, 2],
+                                        rotateY: [-15, -12, -15]
+                                    }}
+                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                                    className="absolute transform -translate-x-12 translate-y-20 bg-black/40 border border-glass-border p-5 rounded-2xl w-64 backdrop-blur-md shadow-2xl group hover:border-accent/30 transition-colors"
+                                    style={{
+                                        rotateY: '-15deg',
+                                        rotateX: '5deg',
+                                        translateZ: '-50px'
+                                    }}
                                 >
-                                    <div className="space-y-4">
-                                        {/* Header */}
-                                        <div className="flex items-center justify-between mb-6">
-                                            <div>
-                                                <h3 className="text-sm font-semibold text-white">Your Links</h3>
-                                                <p className="text-xs text-secondary mt-0.5">Last 24 hours</p>
-                                            </div>
-                                            <div className="flex gap-1">
-                                                <div className="w-2 h-2 rounded-full bg-accent"></div>
-                                                <div className="w-2 h-2 rounded-full bg-accent/50"></div>
-                                                <div className="w-2 h-2 rounded-full bg-accent/30"></div>
-                                            </div>
-                                        </div>
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                                        <div className="text-[10px] text-secondary uppercase tracking-widest font-bold">Systems Operational</div>
+                                    </div>
+                                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                                        <motion.div
+                                            initial={{ width: "0%" }}
+                                            animate={{ width: "100%" }}
+                                            transition={{ duration: 2, delay: 0.8 }}
+                                            className="h-full bg-accent"
+                                        />
+                                    </div>
+                                </motion.div>
 
-                                        {/* Stats Grid */}
-                                        <div className="grid grid-cols-2 gap-3 mb-6">
-                                            <div className="bg-black/40 rounded-lg p-3 border border-glass-border">
-                                                <div className="text-xs text-secondary mb-1">Link Clicks</div>
-                                                <div className="text-2xl font-bold text-white">1,247</div>
-                                                <div className="text-xs text-accent">+12.5%</div>
-                                            </div>
-                                            <div className="bg-black/40 rounded-lg p-3 border border-glass-border">
-                                                <div className="text-xs text-secondary mb-1">Created Today</div>
-                                                <div className="text-2xl font-bold text-white">8</div>
-                                                <div className="text-xs text-accent">+3 new</div>
-                                            </div>
-                                        </div>
+                                {/* Card 2: Middle Layer (Analytics) */}
+                                <motion.div
+                                    animate={{
+                                        y: [0, -15, 0],
+                                        rotateX: [2, 5, 2],
+                                        rotateY: [-15, -10, -15]
+                                    }}
+                                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                                    className="absolute transform translate-x-16 -translate-y-12 bg-gradient-to-br from-glass-bg to-black/60 border border-accent/20 p-6 rounded-2xl w-64 backdrop-blur-xl shadow-glow-purple-sm z-10 group hover:border-accent/40 transition-colors"
+                                    style={{
+                                        rotateY: '-15deg',
+                                        rotateX: '5deg',
+                                        translateZ: '20px'
+                                    }}
+                                >
+                                    <div className="text-[10px] text-accent uppercase tracking-widest font-bold mb-1">Real-time Analytics</div>
+                                    <div className="text-3xl font-bold text-white mb-1">1,247</div>
+                                    <div className="text-[10px] text-secondary">Total clicks tracked today</div>
+                                    <div className="flex gap-1 mt-4">
+                                        {[30, 50, 45, 70, 55].map((h, i) => (
+                                            <div key={i} className="flex-1 bg-accent/40 rounded-sm" style={{ height: `${h}px` }}></div>
+                                        ))}
+                                    </div>
+                                </motion.div>
 
-                                        {/* Graph */}
-                                        <div className="bg-black/40 rounded-lg p-4 border border-glass-border">
-                                            <div className="flex items-end justify-between h-24 gap-2">
-                                                {[40, 65, 45, 80, 60, 90, 75].map((height, i) => (
-                                                    <div key={i} className="flex-1 bg-gradient-to-t from-accent to-accent-light rounded-t opacity-80" style={{ height: `${height}%` }}></div>
-                                                ))}
-                                            </div>
+                                {/* Card 1: Top Layer (Link Preview) */}
+                                <motion.div
+                                    whileHover={{ scale: 1.05, rotateY: -5, rotateX: 2, translateZ: 100 }}
+                                    animate={{
+                                        y: [0, -20, 0],
+                                        rotateX: [2, 6, 2],
+                                        rotateY: [-15, -8, -15]
+                                    }}
+                                    transition={{
+                                        y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                                        rotateX: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                                        rotateY: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                                        scale: { duration: 0.2 }
+                                    }}
+                                    className="relative bg-gradient-to-br from-accent/20 to-black/80 border border-accent/30 p-6 rounded-2xl w-72 backdrop-blur-2xl shadow-glow-purple z-20 cursor-pointer"
+                                    style={{
+                                        rotateY: '-15deg',
+                                        rotateX: '5deg',
+                                        transformStyle: 'preserve-3d',
+                                        translateZ: '80px'
+                                    }}
+                                >
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
+                                            <Link2 size={20} className="text-white" />
                                         </div>
-
-                                        {/* Recent Links - Real Examples */}
-                                        <div className="space-y-2">
-                                            {[
-                                                { url: 'link.ly/offer', clicks: 127 },
-                                                { url: 'link.ly/resume', clicks: 89 },
-                                                { url: 'link.ly/github', clicks: 64 }
-                                            ].map((link, i) => (
-                                                <div key={i} className="flex items-center gap-3 bg-black/20 rounded-lg p-2.5 border border-glass-border/50">
-                                                    <div className="w-8 h-8 rounded bg-accent/20 flex items-center justify-center">
-                                                        <Link2 size={14} className="text-accent" />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="text-xs text-white font-medium truncate">{link.url}</div>
-                                                        <div className="text-[10px] text-secondary">{link.clicks} clicks</div>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                        <div>
+                                            <div className="text-xs text-white font-bold tracking-tight">link.ly/offer</div>
+                                            <div className="text-[10px] text-secondary">Summer Promo 2026</div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div className="space-y-2">
+                                        <div className="h-1.5 w-full bg-white/5 rounded-full"></div>
+                                        <div className="h-1.5 w-2/3 bg-white/5 rounded-full"></div>
+                                    </div>
+                                    <div className="mt-4 flex justify-between items-center">
+                                        <div className="text-[10px] text-accent font-bold uppercase tracking-widest">Active</div>
+                                        <div className="px-2 py-1 bg-accent/20 rounded text-[9px] text-accent-light border border-accent/20">Custom UUID</div>
+                                    </div>
+                                </motion.div>
                             </motion.div>
                         </div>
                     </div>
