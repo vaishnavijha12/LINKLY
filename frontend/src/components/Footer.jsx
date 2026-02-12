@@ -37,26 +37,26 @@ const Footer = ({ onOpenHelp }) => {
                     <div>
                         <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Product</h4>
                         <ul className="space-y-4">
-                            <li><Link to="/" className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px]">URL Shortener</Link></li>
-                            <li><Link to="/qr" className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px]">QR Codes</Link></li>
-                            <li><Link to="/dashboard" className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px]">Analytics</Link></li>
+                            <li><Link to="/" className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px]">URL Shortener</Link></li>
+                            <li><Link to="/qr" className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px]">QR Codes</Link></li>
+                            <li><Link to="/dashboard" className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px]">Analytics</Link></li>
                         </ul>
                     </div>
 
                     <div>
                         <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Resources</h4>
                         <ul className="space-y-4">
-                            <li><button onClick={() => onOpenHelp('docs')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px] text-left">Documentation</button></li>
-                            <li><button onClick={() => onOpenHelp('api')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px] text-left">API Reference</button></li>
-                            <li><button onClick={() => onOpenHelp('status')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px] text-left">Status</button></li>
+                            <li><button onClick={() => onOpenHelp('docs')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px] text-left">Documentation</button></li>
+                            <li><button onClick={() => onOpenHelp('api')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px] text-left">API Reference</button></li>
+                            <li><button onClick={() => onOpenHelp('status')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px] text-left">Status</button></li>
                         </ul>
                     </div>
 
                     <div>
                         <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Legal</h4>
                         <ul className="space-y-4">
-                            <li><button onClick={() => onOpenHelp('privacy')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px] text-left">Privacy Policy</button></li>
-                            <li><button onClick={() => onOpenHelp('terms')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[10px] text-left">Terms of Service</button></li>
+                            <li><button onClick={() => onOpenHelp('privacy')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px] text-left">Privacy Policy</button></li>
+                            <li><button onClick={() => onOpenHelp('terms')} className="text-secondary hover:text-accent-light text-sm transition-colors duration-200 uppercase tracking-widest font-bold text-[9px] text-left">Terms of Service</button></li>
                         </ul>
                     </div>
                 </div>
@@ -68,7 +68,7 @@ const Footer = ({ onOpenHelp }) => {
                     <div className="flex items-center gap-8">
                         <span className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-glow-purple-sm"></div>
-                            <span className="text-secondary text-[10px] uppercase tracking-widest font-bold">Systems Operational</span>
+                            <span className="text-secondary text-[9px] uppercase tracking-widest font-bold">Systems Operational</span>
                         </span>
                     </div>
                 </div>
