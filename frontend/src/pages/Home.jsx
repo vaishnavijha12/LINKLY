@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link2, ArrowRight, Tag, Copy, Check, BarChart3, ShieldCheck, Globe } from "lucide-react";
+import { Link2, ArrowRight, Tag, Copy, Check, BarChart3, ShieldCheck, Globe, MoreHorizontal } from "lucide-react";
 import api, { BACKEND_URL } from "../utils/api";
 import { toast } from "react-hot-toast";
 import FeatureCard from "../components/FeatureCard";
