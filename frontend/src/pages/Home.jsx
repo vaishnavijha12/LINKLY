@@ -252,25 +252,23 @@ const Home = () => {
                                         key={index}
                                         initial={false}
                                         animate={{
-                                            scale: isActive ? 1 : (isNext ? 0.85 : 0.7),
-                                            z: isActive ? 0 : (isNext ? -250 : -500),
-                                            y: isActive ? 0 : (isNext ? -50 : -100),
-                                            x: isActive ? 0 : (isNext ? 40 : 80),
-                                            opacity: isActive ? 1 : (isNext ? 0.6 : 0.2),
-                                            rotateY: isActive ? -15 : -30,
-                                            rotateX: isActive ? 5 : 10,
+                                            scale: isActive ? 1 : (isNext ? 0.95 : 0.9),
+                                            z: isActive ? 0 : (isNext ? -40 : -80),
+                                            y: isActive ? 0 : (isNext ? -20 : -40),
+                                            x: isActive ? 0 : (isNext ? 20 : 40),
+                                            opacity: isActive ? 1 : (isNext ? 0.4 : 0.1),
+                                            rotateY: isActive ? -12 : -18,
+                                            rotateX: isActive ? 4 : 8,
                                         }}
                                         transition={{
-                                            type: "spring",
-                                            stiffness: 150,
-                                            damping: 20,
-                                            mass: 1,
-                                            duration: 0.6
+                                            duration: 0.5,
+                                            ease: "easeInOut",
+                                            opacity: { duration: 0.3 }
                                         }}
-                                        className={`absolute w-full max-w-[480px] aspect-[4/5] rounded-[48px] p-12 transition-all duration-300 transform-gpu cursor-pointer
+                                        className={`absolute w-full max-w-[480px] aspect-[4/5] rounded-[48px] p-12 transition-colors duration-500 transform-gpu cursor-pointer
                                             ${isActive ? 'z-30 bg-gradient-to-br from-glass-bg to-black/90 border border-accent/40 shadow-glow-purple ring-1 ring-white/10' :
-                                                isNext ? 'z-20 bg-glass-bg/80 border border-glass-border shadow-2xl' :
-                                                    'z-10 bg-glass-bg/40 border-none shadow-none grayscale opacity-10'}`}
+                                                isNext ? 'z-20 bg-glass-bg/60 border border-glass-border shadow-xl' :
+                                                    'z-10 bg-glass-bg/20 border-none shadow-none grayscale-0 opacity-10'}`}
                                         style={{ transformStyle: 'preserve-3d' }}
                                     >
                                         {/* Dynamic Content based on which card is at the index */}
