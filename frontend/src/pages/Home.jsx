@@ -122,15 +122,15 @@ const Home = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="max-w-[1400px] mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass overflow-hidden"
+                    className="max-w-6xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass overflow-hidden"
                 >
                     {/* Main Split Panel - Tool Card + Preview */}
-                    <div className="grid grid-cols-1 md:grid-cols-[55%_45%] gap-10 p-14 items-center min-h-[650px]">
+                    <div className="grid grid-cols-1 md:grid-cols-[55%_45%] gap-10 p-10 items-center min-h-[500px]">
                         {/* LEFT: Tool Card (55%) */}
                         <div className="space-y-6">
                             <div>
                                 <div className="text-xs text-secondary uppercase tracking-widest mb-3 font-semibold">LINKLY</div>
-                                <h1 className="text-4xl font-bold tracking-tight mb-3 text-white leading-tight">
+                                <h1 className="text-3xl font-bold tracking-tight mb-3 text-white leading-tight">
                                     Shorten and manage your links instantly
                                 </h1>
                             </div>
@@ -145,7 +145,7 @@ const Home = () => {
                                             value={url}
                                             onChange={(e) => setUrl(e.target.value)}
                                             onKeyDown={(e) => e.key === 'Enter' && handleShorten(e)}
-                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all text-base pr-14"
+                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-3 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all text-base pr-14"
                                             disabled={loading}
                                         />
                                         <button
@@ -163,7 +163,7 @@ const Home = () => {
                                             placeholder="Tag (optional)"
                                             value={tag}
                                             onChange={(e) => setTag(e.target.value)}
-                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-3 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all text-sm pr-10"
+                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-2.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all text-sm pr-10"
                                             disabled={loading}
                                         />
                                         <Tag size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-tertiary" />
