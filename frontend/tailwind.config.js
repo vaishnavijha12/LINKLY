@@ -36,8 +36,8 @@ export default {
             fontSize: {
                 'hero': ['64px', { lineHeight: '1.1', fontWeight: '700' }],
                 'hero-lg': ['72px', { lineHeight: '1.1', fontWeight: '800' }],
-                'section': ['36px', { lineHeight: '1.2', fontWeight: '600' }],
-                'section-lg': ['42px', { lineHeight: '1.2', fontWeight: '700' }],
+                'section': ['30px', { lineHeight: '1.2', fontWeight: '600' }],
+                'section-lg': ['36px', { lineHeight: '1.2', fontWeight: '700' }],
             },
             backdropBlur: {
                 'xs': '2px',

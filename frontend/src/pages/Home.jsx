@@ -308,7 +308,7 @@ const Home = () => {
                     <h2 className="text-section md:text-section-lg font-semibold mb-6 text-white">
                         This is more than a short link.
                     </h2>
-                    <p className="text-xl text-secondary max-w-2xl leading-relaxed">
+                    <p className="text-lg text-secondary max-w-2xl leading-relaxed">
                         Organize, customize, and manage everything in one place.
                         Turn your links into powerful tools for your workflow.
                     </p>
@@ -331,7 +331,7 @@ const Home = () => {
 
                 {/* SECTION 4: QUICK ACCESS / FLOW */}
                 <section className="py-20 flex flex-col items-center text-center">
-                    <h3 className="text-2xl font-medium text-white mb-10">Pick a tool to continue.</h3>
+                    <h3 className="text-xl font-medium text-white mb-10">Pick a tool to continue.</h3>
                     <div className="flex gap-5">
                         <Link
                             to="/dashboard"
