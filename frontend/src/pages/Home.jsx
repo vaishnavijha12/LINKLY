@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Link2, ArrowRight, Tag, Copy, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link2, ArrowRight, Tag, Copy, Check, BarChart3, ShieldCheck, Globe } from "lucide-react";
 import api, { BACKEND_URL } from "../utils/api";
 import { toast } from "react-hot-toast";
 import FeatureCard from "../components/FeatureCard";
@@ -15,7 +15,15 @@ const Home = () => {
     const [copied, setCopied] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const [activeCardState, setActiveCardState] = useState(0); // 0: Link, 1: Stats, 2: Security
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveCardState((prev) => (prev + 1) % 3);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -117,15 +125,18 @@ const Home = () => {
     return (
         <div className="selection:bg-accent/30">
             {/* Main App Container */}
-            <div className="relative z-10 pt-[70px] pb-20 px-6">
+            <div className="relative z-10 min-h-[90vh] flex items-center justify-center py-12 px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="max-w-7xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass overflow-hidden"
+                    className="max-w-7xl w-full bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[32px] shadow-glass overflow-visible relative group/main"
                 >
-                    {/* Main Split Panel - Tool Card + Preview */}
-                    <div className="grid grid-cols-1 md:grid-cols-[52%_48%] gap-0 p-8 md:p-12 items-center min-h-[550px]">
+                    {/* Immersive background glow */}
+                    <div className="absolute -inset-20 bg-accent/5 rounded-[100px] blur-[120px] -z-10 group-hover/main:bg-accent/10 transition-colors duration-1000"></div>
+
+                    {/* Main Split Panel */}
+                    <div className="grid grid-cols-1 lg:grid-cols-[48%_52%] gap-0 p-8 md:p-16 items-center min-h-[600px]">
                         {/* LEFT: Tool Card (55%) */}
                         <div className="space-y-6">
                             <div>
@@ -176,11 +187,15 @@ const Home = () => {
                                     </p>
 
                                     <p className="text-secondary text-sm pt-2">
-                                        Need a custom alias? <button type="button" onClick={() => setIsModalOpen(true)} className="text-accent-light hover:text-accent hover:underline transition-colors">Create branded link →</button>
+                                        Need a custom alias? <button type="button" onClick={() => setIsModalOpen(true)} className="text-accent-light hover:text-accent hover:underline transition-colors font-medium">Create branded link →</button>
                                     </p>
                                 </div>
                             ) : (
-                                <div className="bg-black/40 border border-accent/30 rounded-xl p-6 shadow-glow-purple-sm space-y-4">
+                                <motion.div
+                                    initial={{ scale: 0.95, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    className="bg-black/40 border border-accent/30 rounded-2xl p-8 shadow-glow-purple-sm space-y-4"
+                                >
                                     <p className="text-xs text-secondary uppercase tracking-wider">Success!</p>
                                     <a href={`${BACKEND_URL}/${shortUrl}`} target="_blank" rel="noopener noreferrer" className="text-xl text-white font-medium hover:underline truncate block animated-gradient-text">
                                         {BACKEND_URL.replace(/^https?:\/\//, '')}/{shortUrl}
@@ -218,113 +233,136 @@ const Home = () => {
                                     >
                                         ← Shorten Another
                                     </button>
-                                </div>
+                                </motion.div>
                             )}
                         </div>
 
-                        <div className="hidden md:flex items-center justify-center relative h-full min-h-[400px]">
-                            <motion.div
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8, delay: 0.3 }}
-                                className="relative w-full h-fit flex items-center justify-center"
-                                style={{ perspective: '1200px' }}
-                            >
-                                {/* Card 3: Bottom Layer (Success/System) */}
+                        {/* RIGHT: Featured Dynamic Card */}
+                        <div className="hidden lg:flex items-center justify-center relative h-full perspective-[2000px] py-12">
+                            <AnimatePresence mode="wait">
                                 <motion.div
-                                    animate={{
-                                        y: [0, -10, 0],
-                                        rotateX: [2, 4, 2],
-                                        rotateY: [-15, -12, -15]
-                                    }}
-                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                                    className="absolute transform -translate-x-12 translate-y-20 bg-black/40 border border-glass-border p-5 rounded-2xl w-64 backdrop-blur-md shadow-2xl group hover:border-accent/30 transition-colors"
-                                    style={{
-                                        rotateY: '-15deg',
-                                        rotateX: '5deg',
-                                        translateZ: '-50px'
-                                    }}
-                                >
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                                        <div className="text-[10px] text-secondary uppercase tracking-widest font-bold">Systems Operational</div>
-                                    </div>
-                                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                                        <motion.div
-                                            initial={{ width: "0%" }}
-                                            animate={{ width: "100%" }}
-                                            transition={{ duration: 2, delay: 0.8 }}
-                                            className="h-full bg-accent"
-                                        />
-                                    </div>
-                                </motion.div>
-
-                                {/* Card 2: Middle Layer (Analytics) */}
-                                <motion.div
-                                    animate={{
-                                        y: [0, -15, 0],
-                                        rotateX: [2, 5, 2],
-                                        rotateY: [-15, -10, -15]
-                                    }}
-                                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                                    className="absolute transform translate-x-16 -translate-y-12 bg-gradient-to-br from-glass-bg to-black/60 border border-accent/20 p-6 rounded-2xl w-64 backdrop-blur-xl shadow-glow-purple-sm z-10 group hover:border-accent/40 transition-colors"
-                                    style={{
-                                        rotateY: '-15deg',
-                                        rotateX: '5deg',
-                                        translateZ: '20px'
-                                    }}
-                                >
-                                    <div className="text-[10px] text-accent uppercase tracking-widest font-bold mb-1">Real-time Analytics</div>
-                                    <div className="text-3xl font-bold text-white mb-1">1,247</div>
-                                    <div className="text-[10px] text-secondary">Total clicks tracked today</div>
-                                    <div className="flex gap-1 mt-4">
-                                        {[30, 50, 45, 70, 55].map((h, i) => (
-                                            <div key={i} className="flex-1 bg-accent/40 rounded-sm" style={{ height: `${h}px` }}></div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-
-                                {/* Card 1: Top Layer (Link Preview) */}
-                                <motion.div
-                                    whileHover={{ scale: 1.05, rotateY: -5, rotateX: 2, translateZ: 100 }}
-                                    animate={{
-                                        y: [0, -20, 0],
-                                        rotateX: [2, 6, 2],
-                                        rotateY: [-15, -8, -15]
-                                    }}
+                                    key={activeCardState}
+                                    initial={{ opacity: 0, scale: 0.9, rotateY: 20, z: -100 }}
+                                    animate={{ opacity: 1, scale: 1, rotateY: -15, z: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95, rotateY: -40, z: -200 }}
                                     transition={{
-                                        y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                                        rotateX: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                                        rotateY: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                                        scale: { duration: 0.2 }
+                                        type: "spring",
+                                        stiffness: 100,
+                                        damping: 20,
+                                        duration: 0.6
                                     }}
-                                    className="relative bg-gradient-to-br from-accent/20 to-black/80 border border-accent/30 p-6 rounded-2xl w-72 backdrop-blur-2xl shadow-glow-purple z-20 cursor-pointer"
+                                    className="relative w-full max-w-[450px] aspect-[4/5] bg-gradient-to-br from-glass-bg to-black/80 border border-glass-border rounded-[40px] p-10 shadow-3xl backdrop-blur-3xl transform-gpu group cursor-pointer"
                                     style={{
-                                        rotateY: '-15deg',
-                                        rotateX: '5deg',
                                         transformStyle: 'preserve-3d',
-                                        translateZ: '80px'
+                                        boxShadow: '0 25px 50px -12px rgba(139, 92, 246, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1)'
                                     }}
                                 >
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-                                            <Link2 size={20} className="text-white" />
+                                    {/* Ambient card glow */}
+                                    <div className="absolute -inset-0.5 bg-gradient-to-br from-accent/40 to-transparent rounded-[40px] blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+
+                                    {activeCardState === 0 && (
+                                        <div className="h-full flex flex-col justify-between">
+                                            <div className="space-y-6">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center shadow-glow-purple">
+                                                        <Link2 size={24} className="text-white" />
+                                                    </div>
+                                                    <div className="px-4 py-1.5 bg-accent/20 rounded-full border border-accent/30 text-[10px] text-accent-light font-bold uppercase tracking-widest">
+                                                        Featured
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-2xl font-bold text-white mb-2 underline decoration-accent/30">link.ly/summer-promo</h3>
+                                                    <p className="text-secondary text-sm leading-relaxed">Branded link with automatic tracking and custom destination mapping.</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="bg-black/40 rounded-3xl p-6 border border-glass-border text-center">
+                                                <div className="w-32 h-32 bg-white rounded-xl mx-auto mb-4 p-2 flex items-center justify-center">
+                                                    <div className="w-full h-full bg-black/5 flex items-center justify-center">
+                                                        <Globe size={40} className="text-black/20" />
+                                                    </div>
+                                                </div>
+                                                <div className="text-[10px] text-secondary font-bold uppercase tracking-wider">Scannable QR Included</div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div className="text-xs text-white font-bold tracking-tight">link.ly/offer</div>
-                                            <div className="text-[10px] text-secondary">Summer Promo 2026</div>
+                                    )}
+
+                                    {activeCardState === 1 && (
+                                        <div className="h-full flex flex-col justify-between">
+                                            <div className="space-y-6">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="w-14 h-14 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-glow-blue">
+                                                        <BarChart3 size={24} className="text-white" />
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                                                        <span className="text-[10px] text-secondary font-bold uppercase tracking-widest">Live</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-2xl font-bold text-white mb-1">Impact Analytics</h3>
+                                                    <p className="text-secondary text-sm">Deep insights into link performance and visitor demographics.</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <div className="flex items-end justify-between h-32 gap-3 pb-2 pt-8">
+                                                    {[40, 60, 35, 85, 55, 95, 75].map((h, i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            initial={{ height: 0 }}
+                                                            animate={{ height: `${h}%` }}
+                                                            className="flex-1 bg-gradient-to-t from-accent/20 to-accent rounded-t-lg"
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <div className="flex justify-between items-center bg-black/40 rounded-2xl p-4 border border-glass-border">
+                                                    <div className="text-xs text-secondary font-medium uppercase tracking-tight">Daily Traffic</div>
+                                                    <div className="text-xl font-bold text-white">+142% 📈</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <div className="h-1.5 w-full bg-white/5 rounded-full"></div>
-                                        <div className="h-1.5 w-2/3 bg-white/5 rounded-full"></div>
-                                    </div>
-                                    <div className="mt-4 flex justify-between items-center">
-                                        <div className="text-[10px] text-accent font-bold uppercase tracking-widest">Active</div>
-                                        <div className="px-2 py-1 bg-accent/20 rounded text-[9px] text-accent-light border border-accent/20">Custom UUID</div>
-                                    </div>
+                                    )}
+
+                                    {activeCardState === 2 && (
+                                        <div className="h-full flex flex-col justify-between">
+                                            <div className="space-y-6">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center shadow-glow-green">
+                                                        <ShieldCheck size={24} className="text-white" />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-2xl font-bold text-white mb-2">Secure & Verified</h3>
+                                                    <p className="text-secondary text-sm leading-relaxed">Advanced protection against spam, phishing, and broken redirects.</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-3">
+                                                {[
+                                                    { label: "SSL Certification", active: true },
+                                                    { label: "Spam Protection", active: true },
+                                                    { label: "Broken Link Check", active: true },
+                                                    { label: "Phishing Guard", active: true }
+                                                ].map((item, i) => (
+                                                    <div key={i} className="flex items-center justify-between bg-black/30 rounded-xl px-5 py-3 border border-glass-border">
+                                                        <span className="text-xs text-white font-medium">{item.label}</span>
+                                                        <Check size={14} className="text-green-400" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Floating animation wrapper */}
+                                    <motion.div
+                                        animate={{ y: [0, -20, 0] }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                        className="absolute inset-0 pointer-events-none rounded-[40px] border-2 border-accent/20"
+                                    />
                                 </motion.div>
-                            </motion.div>
+                            </AnimatePresence>
                         </div>
                     </div>
                 </motion.div>
