@@ -4,13 +4,27 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { login } = useContext(AuthContext);
+    const { login, googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        setLoading(true);
+        try {
+            await googleLogin(credentialResponse.credential);
+            toast.success("Signed in with Google");
+            navigate("/dashboard");
+        } catch (error) {
+            toast.error("Google login failed");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -67,7 +81,7 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className="pt-4">
+                    <div className="pt-4 space-y-6">
                         <button
                             type="submit"
                             disabled={loading}
@@ -76,6 +90,22 @@ const Login = () => {
                             <span className="relative z-10">{loading ? "Verifying..." : "Enter Dashboard"}</span>
                             {!loading && <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform relative z-10" />}
                         </button>
+
+                        <div className="relative flex items-center py-2">
+                            <div className="flex-grow border-t border-glass-border"></div>
+                            <span className="flex-shrink mx-4 text-xs text-tertiary uppercase tracking-widest font-bold">OR</span>
+                            <div className="flex-grow border-t border-glass-border"></div>
+                        </div>
+
+                        <div className="flex justify-center">
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={() => toast.error("Google Login Failed")}
+                                theme="filled_black"
+                                shape="pill"
+                                width="100%"
+                            />
+                        </div>
                     </div>
                 </form>
 

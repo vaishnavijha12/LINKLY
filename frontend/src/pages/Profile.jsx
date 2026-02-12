@@ -12,7 +12,29 @@ const Profile = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [strength, setStrength] = useState({ score: 0, label: "", color: "bg-tertiary" });
     const navigate = useNavigate();
+
+    // Handle Password Strength
+    const checkPasswordStrength = (pass) => {
+        let score = 0;
+        if (pass.length === 0) return { score: 0, label: "", color: "bg-tertiary" };
+        if (pass.length >= 8) score++;
+        if (/[A-Z]/.test(pass)) score++;
+        if (/[0-9]/.test(pass)) score++;
+        if (/[^A-Za-z0-9]/.test(pass)) score++;
+
+        const labels = ["Very Weak", "Weak", "Medium", "Strong", "Very Strong"];
+        const colors = ["bg-red-500", "bg-orange-500", "bg-yellow-500", "bg-green-500", "bg-emerald-500"];
+
+        return { score, label: labels[score], color: colors[score] };
+    };
+
+    const handlePasswordChange = (e) => {
+        const val = e.target.value;
+        setPassword(val);
+        setStrength(checkPasswordStrength(val));
+    };
 
     useEffect(() => {
         if (user) {
@@ -24,6 +46,12 @@ const Profile = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         setLoading(true);
+        if (password && password.length < 8) {
+            toast.error("Password must be at least 8 characters");
+            setLoading(false);
+            return;
+        }
+
         try {
             const res = await api.put("/auth/profile", { username, email, password });
             toast.success(res.data.message);
@@ -99,7 +127,7 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                            <div className="relative">
+                            <div className="relative space-y-3">
                                 <label className="text-xs font-black uppercase tracking-widest text-accent-light mb-2 block ml-1">New Password (Optional)</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
@@ -108,11 +136,29 @@ const Profile = () => {
                                     <input
                                         type="password"
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={handlePasswordChange}
                                         className="w-full bg-black/40 border border-glass-border focus:border-accent/60 p-4 pl-12 rounded-2xl text-white outline-none transition-all placeholder:text-tertiary focus:ring-4 focus:ring-accent/5"
                                         placeholder="••••••••"
                                     />
                                 </div>
+                                {password.length > 0 && (
+                                    <div className="px-1 space-y-2">
+                                        <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
+                                            <span className="text-secondary">Strength</span>
+                                            <span className={strength.score <= 1 ? "text-red-400" : strength.score <= 3 ? "text-yellow-400" : "text-green-400"}>
+                                                {strength.label}
+                                            </span>
+                                        </div>
+                                        <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden flex gap-1">
+                                            {[...Array(4)].map((_, i) => (
+                                                <div
+                                                    key={i}
+                                                    className={`h-full flex-1 transition-all duration-500 ${i < strength.score ? strength.color : 'bg-white/5'}`}
+                                                ></div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

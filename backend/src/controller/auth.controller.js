@@ -1,14 +1,25 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const register = async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        const userExists = await User.findOne({ email });
+        if (password.length < 8) {
+            return res.status(400).json({ message: "Password must be at least 8 characters long" });
+        }
+
+        const userExists = await User.findOne({
+            $or: [{ email }, { username }]
+        });
+
         if (userExists) {
-            return res.status(400).json({ message: "User already exists" });
+            const conflict = userExists.email === email ? "Email" : "Username";
+            return res.status(400).json({ message: `${conflict} already exists` });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -83,6 +94,9 @@ export const updateProfile = async (req, res) => {
         if (email) user.email = email;
 
         if (password) {
+            if (password.length < 8) {
+                return res.status(400).json({ message: "Password must be at least 8 characters long" });
+            }
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
         }
@@ -99,5 +113,70 @@ export const updateProfile = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const checkUsername = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username });
+        res.status(200).json({ available: !user });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const googleLogin = async (req, res) => {
+    try {
+        const { idToken } = req.body;
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const { sub: googleId, email, name, picture } = ticket.getPayload();
+
+        let user = await User.findOne({
+            $or: [{ googleId }, { email }]
+        });
+
+        if (!user) {
+            // Create new user if not exists
+            // Generate a random username if name is taken
+            let baseUsername = name.replace(/\s+/g, '').toLowerCase().substring(0, 10);
+            let finalUsername = baseUsername;
+            let counter = 1;
+
+            while (await User.findOne({ username: finalUsername })) {
+                finalUsername = `${baseUsername}${counter}`;
+                counter++;
+            }
+
+            user = new User({
+                username: finalUsername,
+                email,
+                googleId,
+            });
+            await user.save();
+        } else if (!user.googleId) {
+            // Link existing account to Google
+            user.googleId = googleId;
+            await user.save();
+        }
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "1d",
+        });
+
+        res.status(200).json({
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Google Auth error", error: error.message });
     }
 };
