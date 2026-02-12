@@ -280,12 +280,12 @@ const Home = () => {
                                                             <Link2 size={32} className="text-white" />
                                                         </div>
                                                         <div className="px-5 py-2 bg-accent/20 rounded-full border border-accent/30 text-xs text-accent-light font-black uppercase tracking-[0.2em]">
-                                                            Branded
+                                                            Linkly Pro
                                                         </div>
                                                     </div>
                                                     <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight underline decoration-accent/40 underline-offset-8 font-serif">lnky.io/brand</h3>
-                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Create memorable, high-converting links with your own custom domain.</p>
+                                                        <h3 className="text-4xl font-black text-white leading-tight underline decoration-accent/40 underline-offset-8 font-serif">linkly.site/premium</h3>
+                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Elevate your presence with enterprise-grade Linkly branding.</p>
                                                     </div>
                                                 </div>
                                                 <div className="bg-[#1c1c24] border border-accent/20 rounded-[32px] p-6 shadow-2xl mt-8 ring-1 ring-white/10">
