@@ -284,8 +284,8 @@ const Home = () => {
                                                         </div>
                                                     </div>
                                                     <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight underline decoration-accent/40 underline-offset-8">link.ly/offer</h3>
-                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Performance-optimized branded links for global distribution.</p>
+                                                        <h3 className="text-4xl font-black text-white leading-tight underline decoration-accent/40 underline-offset-8 font-serif">lnky.io/brand</h3>
+                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Create memorable, high-converting links with your own custom domain.</p>
                                                     </div>
                                                 </div>
                                                 <div className="bg-[#1c1c24] border border-accent/20 rounded-[32px] p-6 shadow-2xl mt-8 ring-1 ring-white/10">
@@ -308,8 +308,8 @@ const Home = () => {
                                                         </div>
                                                     </div>
                                                     <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight">1.2M Clicks</h3>
-                                                        <p className="text-secondary text-lg font-medium">Real-time geographic and platform analytics delivered instantly.</p>
+                                                        <h3 className="text-4xl font-black text-white leading-tight">1.4B Clicks</h3>
+                                                        <p className="text-secondary text-lg font-medium">Real-time geographic insights and campaign tracking at scale.</p>
                                                     </div>
                                                 </div>
                                                 <div className="h-48 flex items-end gap-3 px-2">
@@ -337,8 +337,8 @@ const Home = () => {
                                                         </div>
                                                     </div>
                                                     <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight">Secure Infrastructure</h3>
-                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Enterprise-grade encryption and phishing protection for every link.</p>
+                                                        <h3 className="text-4xl font-black text-white leading-tight">Secure. Verified.</h3>
+                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Enterprise-grade protection. Every link is encrypted and verified for safety.</p>
                                                     </div>
                                                 </div>
                                                 <div className="space-y-4">
