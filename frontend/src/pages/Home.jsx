@@ -123,249 +123,252 @@ const Home = () => {
     ];
 
     return (
-        <div className="selection:bg-accent/30">
-            {/* Main App Container */}
-            <div className="relative z-10 min-h-[90vh] flex items-center justify-center py-12 px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="max-w-7xl w-full bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[32px] shadow-glass overflow-visible relative group/main"
-                >
-                    {/* Immersive background glow */}
-                    <div className="absolute -inset-20 bg-accent/5 rounded-[100px] blur-[120px] -z-10 group-hover/main:bg-accent/10 transition-colors duration-1000"></div>
+        <div className="selection:bg-accent/30 overflow-x-hidden">
+            {/* Main Full-Width Hero Container */}
+            <div className="relative z-10 min-h-[95vh] flex items-center justify-center py-20 px-6 lg:px-12">
+                {/* Immersive Background Glows (not constrained by a box) */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] pointer-events-none -z-10">
+                    <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px] animate-pulse"></div>
+                    <div className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] bg-purple-900/10 rounded-full blur-[120px]"></div>
+                </div>
 
-                    {/* Main Split Panel */}
-                    <div className="grid grid-cols-1 lg:grid-cols-[48%_52%] gap-0 p-8 md:p-16 items-center min-h-[600px]">
-                        {/* LEFT: Tool Card (55%) */}
-                        <div className="space-y-6">
-                            <div>
-                                <div className="text-xs text-secondary uppercase tracking-widest mb-3 font-semibold">LINKLY</div>
-                                <h1 className="text-3xl font-bold tracking-tight mb-3 text-white leading-tight">
-                                    Shorten and manage your links instantly
+                <div className="max-w-[1440px] w-full mx-auto">
+                    {/* Main Content Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+                        {/* LEFT: Content & Tool (Expansive) */}
+                        <div className="space-y-10 lg:pr-12">
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                className="space-y-6 text-center lg:text-left"
+                            >
+                                <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.1] tracking-tight">
+                                    Shorten with <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-light">Vision.</span>
                                 </h1>
-                            </div>
+                                <p className="text-xl md:text-2xl text-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+                                    Turn long, cluttered links into beautiful, trackable assets. Built for impact and visibility.
+                                </p>
+                            </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="max-w-xl mx-auto lg:mx-0"
+                            >
+                                {!shortUrl ? (
+                                    <div className="space-y-6">
+                                        <div className="relative group">
+                                            <input
+                                                id="url-input"
+                                                type="text"
+                                                placeholder="Paste a link to shorten..."
+                                                value={url}
+                                                onChange={(e) => setUrl(e.target.value)}
+                                                onKeyDown={(e) => e.key === 'Enter' && handleShorten(e)}
+                                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-xl pr-16 shadow-2xl backdrop-blur-sm"
+                                                disabled={loading}
+                                            />
+                                            <button
+                                                onClick={handleShorten}
+                                                disabled={loading}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-accent text-white rounded-xl hover:bg-accent-light transition-all duration-200 disabled:opacity-50"
+                                            >
+                                                {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <ArrowRight size={24} />}
+                                            </button>
+                                        </div>
 
-                            {!shortUrl ? (
-                                <div className="space-y-4">
-                                    <div className="relative group">
-                                        <input
-                                            id="url-input"
-                                            type="text"
-                                            placeholder="Paste a link to shorten..."
-                                            value={url}
-                                            onChange={(e) => setUrl(e.target.value)}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleShorten(e)}
-                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-3 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all text-base pr-14"
-                                            disabled={loading}
-                                        />
-                                        <button
-                                            onClick={handleShorten}
-                                            disabled={loading}
-                                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-gradient-to-r from-accent to-accent-dark text-white rounded-lg hover:shadow-glow-purple-sm transition-all duration-200 disabled:opacity-50 hover:scale-105"
-                                        >
-                                            {loading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <ArrowRight size={18} />}
-                                        </button>
+                                        <div className="flex flex-col md:flex-row gap-4">
+                                            <div className="relative flex-1 group">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Tag (optional)"
+                                                    value={tag}
+                                                    onChange={(e) => setTag(e.target.value)}
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/40 transition-all text-base pr-12 backdrop-blur-sm"
+                                                    disabled={loading}
+                                                />
+                                                <Tag size={18} className="absolute right-5 top-1/2 -translate-y-1/2 text-tertiary group-focus-within:text-accent transition-colors" />
+                                            </div>
+                                            <button
+                                                onClick={() => setIsModalOpen(true)}
+                                                className="px-8 py-4 bg-glass-bg border border-glass-border rounded-2xl text-secondary hover:text-white hover:border-accent/50 transition-all text-sm font-bold uppercase tracking-widest backdrop-blur-sm shadow-xl"
+                                            >
+                                                Branded Link
+                                            </button>
+                                        </div>
+
+                                        <p className="text-secondary text-sm flex items-center justify-center lg:justify-start gap-3 opacity-60">
+                                            <Check size={14} className="text-green-400" />
+                                            No tracking • No ads • Reliable for life
+                                        </p>
                                     </div>
-
-                                    <div className="relative">
-                                        <input
-                                            type="text"
-                                            placeholder="Tag (optional)"
-                                            value={tag}
-                                            onChange={(e) => setTag(e.target.value)}
-                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-2.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all text-sm pr-10"
-                                            disabled={loading}
-                                        />
-                                        <Tag size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-tertiary" />
-                                    </div>
-
-                                    {/* Trust Line */}
-                                    <p className="text-secondary text-xs flex items-center gap-2">
-                                        <span className="w-1 h-1 rounded-full bg-accent"></span>
-                                        No ads • No tracking • Links never expire
-                                    </p>
-
-                                    <p className="text-secondary text-sm pt-2">
-                                        Need a custom alias? <button type="button" onClick={() => setIsModalOpen(true)} className="text-accent-light hover:text-accent hover:underline transition-colors font-medium">Create branded link →</button>
-                                    </p>
-                                </div>
-                            ) : (
-                                <motion.div
-                                    initial={{ scale: 0.95, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    className="bg-black/40 border border-accent/30 rounded-2xl p-8 shadow-glow-purple-sm space-y-4"
-                                >
-                                    <p className="text-xs text-secondary uppercase tracking-wider">Success!</p>
-                                    <a href={`${BACKEND_URL}/${shortUrl}`} target="_blank" rel="noopener noreferrer" className="text-xl text-white font-medium hover:underline truncate block animated-gradient-text">
-                                        {BACKEND_URL.replace(/^https?:\/\//, '')}/{shortUrl}
-                                    </a>
-
-                                    {/* Action Affordance */}
-                                    <div className="flex items-center gap-3 pt-2">
-                                        <button
-                                            onClick={handleCopy}
-                                            className={`px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium flex items-center gap-2 ${copied ? 'bg-accent/20 text-accent-light' : 'bg-gradient-to-r from-accent to-accent-dark text-white hover:shadow-glow-purple-sm'}`}
-                                        >
-                                            <Copy size={16} />
-                                            {copied ? 'Copied' : 'Copy'}
-                                        </button>
-                                        <a
-                                            href={`${BACKEND_URL}/${shortUrl}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="px-4 py-2 rounded-lg bg-glass-bg border border-glass-border text-white hover:border-accent/30 transition-all duration-200 text-sm font-medium flex items-center gap-2"
-                                        >
-                                            <ArrowRight size={16} />
-                                            Open
-                                        </a>
-                                        <Link
-                                            to="/qr"
-                                            className="px-4 py-2 rounded-lg bg-glass-bg border border-glass-border text-white hover:border-accent/30 transition-all duration-200 text-sm font-medium"
-                                        >
-                                            QR
-                                        </Link>
-                                    </div>
-
-                                    <button
-                                        onClick={() => { setShortUrl(null); setUrl(''); setTag(''); }}
-                                        className="text-secondary hover:text-white text-sm transition-colors pt-2"
+                                ) : (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                        className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-2xl backdrop-blur-sm space-y-4"
                                     >
-                                        ← Shorten Another
-                                    </button>
-                                </motion.div>
-                            )}
+                                        <p className="text-sm text-tertiary">Your shortened URL:</p>
+                                        <div className="flex items-center justify-between bg-white/10 rounded-xl pr-2">
+                                            <a
+                                                href={`${BACKEND_URL}/${shortUrl}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex-1 px-4 py-3 text-white text-lg truncate hover:text-accent transition-colors"
+                                            >
+                                                {BACKEND_URL}/{shortUrl}
+                                            </a>
+                                            <button
+                                                onClick={handleCopy}
+                                                className="p-3 bg-accent text-white rounded-lg hover:bg-accent-light transition-all duration-200"
+                                            >
+                                                {copied ? <Check size={20} /> : <Copy size={20} />}
+                                            </button>
+                                        </div>
+                                        <button
+                                            onClick={() => setShortUrl(null)}
+                                            className="w-full py-3 text-accent-light hover:text-accent transition-colors font-medium"
+                                        >
+                                            Shorten another link
+                                        </button>
+                                    </motion.div>
+                                )}
+                            </motion.div>
                         </div>
 
-                        {/* RIGHT: Featured Dynamic Card */}
-                        <div className="hidden lg:flex items-center justify-center relative h-full perspective-[2000px] py-12">
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={activeCardState}
-                                    initial={{ opacity: 0, scale: 0.9, rotateY: 20, z: -100 }}
-                                    animate={{ opacity: 1, scale: 1, rotateY: -15, z: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95, rotateY: -40, z: -200 }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 100,
-                                        damping: 20,
-                                        duration: 0.6
-                                    }}
-                                    className="relative w-full max-w-[450px] aspect-[4/5] bg-gradient-to-br from-glass-bg to-black/80 border border-glass-border rounded-[40px] p-10 shadow-3xl backdrop-blur-3xl transform-gpu group cursor-pointer"
-                                    style={{
-                                        transformStyle: 'preserve-3d',
-                                        boxShadow: '0 25px 50px -12px rgba(139, 92, 246, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1)'
-                                    }}
-                                >
-                                    {/* Ambient card glow */}
-                                    <div className="absolute -inset-0.5 bg-gradient-to-br from-accent/40 to-transparent rounded-[40px] blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                        {/* RIGHT: High-Energy Depth Jump Carousel */}
+                        <div className="hidden lg:flex items-center justify-center relative h-[600px] perspective-[2500px]">
+                            {[2, 1, 0].map((offset) => {
+                                // Calculate position in the carousel
+                                const index = (activeCardState + offset) % 3;
+                                const isActive = offset === 0;
+                                const isNext = offset === 1;
+                                const isThird = offset === 2;
 
-                                    {activeCardState === 0 && (
-                                        <div className="h-full flex flex-col justify-between">
-                                            <div className="space-y-6">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center shadow-glow-purple">
-                                                        <Link2 size={24} className="text-white" />
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        initial={false}
+                                        animate={{
+                                            scale: isActive ? 1 : (isNext ? 0.85 : 0.7),
+                                            z: isActive ? 0 : (isNext ? -250 : -500),
+                                            y: isActive ? 0 : (isNext ? -50 : -100),
+                                            x: isActive ? 0 : (isNext ? 40 : 80),
+                                            opacity: isActive ? 1 : (isNext ? 0.6 : 0.2),
+                                            rotateY: isActive ? -15 : -30,
+                                            rotateX: isActive ? 5 : 10,
+                                        }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 150,
+                                            damping: 20,
+                                            mass: 1,
+                                            duration: 0.6
+                                        }}
+                                        className={`absolute w-full max-w-[480px] aspect-[4/5] rounded-[48px] p-12 transition-all duration-300 transform-gpu cursor-pointer
+                                            ${isActive ? 'z-30 bg-gradient-to-br from-glass-bg to-black/90 border border-accent/40 shadow-glow-purple ring-1 ring-white/10' :
+                                                isNext ? 'z-20 bg-glass-bg/80 border border-glass-border shadow-2xl' :
+                                                    'z-10 bg-glass-bg/40 border-none shadow-none grayscale opacity-10'}`}
+                                        style={{ transformStyle: 'preserve-3d' }}
+                                    >
+                                        {/* Dynamic Content based on which card is at the index */}
+                                        {index === 0 && (
+                                            <div className="h-full flex flex-col justify-between">
+                                                <div className="space-y-8">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="w-16 h-16 rounded-3xl bg-accent flex items-center justify-center shadow-glow-purple ring-1 ring-white/20">
+                                                            <Link2 size={32} className="text-white" />
+                                                        </div>
+                                                        <div className="px-5 py-2 bg-accent/20 rounded-full border border-accent/30 text-xs text-accent-light font-black uppercase tracking-[0.2em]">
+                                                            Branded
+                                                        </div>
                                                     </div>
-                                                    <div className="px-4 py-1.5 bg-accent/20 rounded-full border border-accent/30 text-[10px] text-accent-light font-bold uppercase tracking-widest">
-                                                        Featured
+                                                    <div className="space-y-4">
+                                                        <h3 className="text-4xl font-black text-white leading-tight underline decoration-accent/40 underline-offset-8">link.ly/offer</h3>
+                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Performance-optimized branded links for global distribution.</p>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <h3 className="text-2xl font-bold text-white mb-2 underline decoration-accent/30">link.ly/summer-promo</h3>
-                                                    <p className="text-secondary text-sm leading-relaxed">Branded link with automatic tracking and custom destination mapping.</p>
+                                                <div className="bg-white rounded-[32px] p-6 shadow-2xl mt-8">
+                                                    <div className="w-full h-40 bg-black/5 flex items-center justify-center border-2 border-dashed border-black/10 rounded-2xl">
+                                                        <Globe size={64} className="text-black/10 animate-pulse" />
+                                                    </div>
                                                 </div>
                                             </div>
+                                        )}
 
-                                            <div className="bg-black/40 rounded-3xl p-6 border border-glass-border text-center">
-                                                <div className="w-32 h-32 bg-white rounded-xl mx-auto mb-4 p-2 flex items-center justify-center">
-                                                    <div className="w-full h-full bg-black/5 flex items-center justify-center">
-                                                        <Globe size={40} className="text-black/20" />
+                                        {index === 1 && (
+                                            <div className="h-full flex flex-col justify-between">
+                                                <div className="space-y-8">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="w-16 h-16 rounded-3xl bg-indigo-500 flex items-center justify-center shadow-glow-blue ring-1 ring-white/20">
+                                                            <BarChart3 size={32} className="text-white" />
+                                                        </div>
+                                                        <div className="px-5 py-2 bg-indigo-500/20 rounded-full border border-indigo-500/30 text-xs text-indigo-400 font-black uppercase tracking-[0.2em]">
+                                                            Live Stats
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-4">
+                                                        <h3 className="text-4xl font-black text-white leading-tight">1.2M Clicks</h3>
+                                                        <p className="text-secondary text-lg font-medium">Real-time geographic and platform analytics delivered instantly.</p>
                                                     </div>
                                                 </div>
-                                                <div className="text-[10px] text-secondary font-bold uppercase tracking-wider">Scannable QR Included</div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {activeCardState === 1 && (
-                                        <div className="h-full flex flex-col justify-between">
-                                            <div className="space-y-6">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="w-14 h-14 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-glow-blue">
-                                                        <BarChart3 size={24} className="text-white" />
-                                                    </div>
-                                                    <div className="flex gap-2">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                                                        <span className="text-[10px] text-secondary font-bold uppercase tracking-widest">Live</span>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-2xl font-bold text-white mb-1">Impact Analytics</h3>
-                                                    <p className="text-secondary text-sm">Deep insights into link performance and visitor demographics.</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                <div className="flex items-end justify-between h-32 gap-3 pb-2 pt-8">
-                                                    {[40, 60, 35, 85, 55, 95, 75].map((h, i) => (
+                                                <div className="h-48 flex items-end gap-3 px-2">
+                                                    {[50, 80, 45, 95, 65, 100, 85].map((h, i) => (
                                                         <motion.div
                                                             key={i}
                                                             initial={{ height: 0 }}
                                                             animate={{ height: `${h}%` }}
-                                                            className="flex-1 bg-gradient-to-t from-accent/20 to-accent rounded-t-lg"
+                                                            className="flex-1 bg-gradient-to-t from-accent/50 to-accent rounded-t-xl"
                                                         />
                                                     ))}
                                                 </div>
-                                                <div className="flex justify-between items-center bg-black/40 rounded-2xl p-4 border border-glass-border">
-                                                    <div className="text-xs text-secondary font-medium uppercase tracking-tight">Daily Traffic</div>
-                                                    <div className="text-xl font-bold text-white">+142% 📈</div>
-                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
 
-                                    {activeCardState === 2 && (
-                                        <div className="h-full flex flex-col justify-between">
-                                            <div className="space-y-6">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center shadow-glow-green">
-                                                        <ShieldCheck size={24} className="text-white" />
+                                        {index === 2 && (
+                                            <div className="h-full flex flex-col justify-between">
+                                                <div className="space-y-8">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="w-16 h-16 rounded-3xl bg-green-500 flex items-center justify-center shadow-glow-green ring-1 ring-white/20">
+                                                            <ShieldCheck size={32} className="text-white" />
+                                                        </div>
+                                                        <div className="px-5 py-2 bg-green-500/20 rounded-full border border-green-500/30 text-xs text-green-400 font-black uppercase tracking-[0.2em]">
+                                                            Verified
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-4">
+                                                        <h3 className="text-4xl font-black text-white leading-tight">Secure Infrastructure</h3>
+                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Enterprise-grade encryption and phishing protection for every link.</p>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <h3 className="text-2xl font-bold text-white mb-2">Secure & Verified</h3>
-                                                    <p className="text-secondary text-sm leading-relaxed">Advanced protection against spam, phishing, and broken redirects.</p>
+                                                <div className="space-y-4">
+                                                    {[1, 2, 3].map((_, i) => (
+                                                        <div key={i} className="flex items-center justify-between bg-white/5 rounded-2xl px-6 py-4 border border-white/10 ring-1 ring-white/5">
+                                                            <div className="w-2/3 h-2 bg-white/10 rounded-full"></div>
+                                                            <Check size={18} className="text-green-400" />
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
+                                        )}
 
-                                            <div className="space-y-3">
-                                                {[
-                                                    { label: "SSL Certification", active: true },
-                                                    { label: "Spam Protection", active: true },
-                                                    { label: "Broken Link Check", active: true },
-                                                    { label: "Phishing Guard", active: true }
-                                                ].map((item, i) => (
-                                                    <div key={i} className="flex items-center justify-between bg-black/30 rounded-xl px-5 py-3 border border-glass-border">
-                                                        <span className="text-xs text-white font-medium">{item.label}</span>
-                                                        <Check size={14} className="text-green-400" />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Floating animation wrapper */}
-                                    <motion.div
-                                        animate={{ y: [0, -20, 0] }}
-                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                        className="absolute inset-0 pointer-events-none rounded-[40px] border-2 border-accent/20"
-                                    />
-                                </motion.div>
-                            </AnimatePresence>
+                                        {/* Premium Floating Micro-Animation */}
+                                        <motion.div
+                                            animate={{
+                                                y: [0, -15, 0],
+                                                rotate: [0, 1, 0]
+                                            }}
+                                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                                            className="absolute inset-0 pointer-events-none rounded-[48px] border-2 border-white/5"
+                                        />
+                                    </motion.div>
+                                );
+                            })}
                         </div>
                     </div>
-                </motion.div>
+                </div>
             </div>
 
             {/* Continue with existing sections below */}
