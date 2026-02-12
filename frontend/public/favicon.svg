@@ -1,0 +1,22 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="shadow" x="-4" y="-4" width="40" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="1"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.545098 0 0 0 0 0.360784 0 0 0 0 0.964706 0 0 0 0.25 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#gradient)" filter="url(#shadow)"/>
+  <path d="M11 16C11 13.2386 13.2386 11 16 11H20V13H16C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19H20V21H16C13.2386 21 11 18.7614 11 16Z" fill="white"/>
+  <path d="M21 16C21 18.7614 18.7614 21 16 21H12V19H16C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13H12V11H16C18.7614 11 21 13.2386 21 16Z" fill="white" opacity="0.8"/>
+  <rect x="13" y="15" width="6" height="2" rx="1" fill="white"/>
+</svg>
