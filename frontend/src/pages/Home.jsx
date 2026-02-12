@@ -273,79 +273,151 @@ const Home = () => {
                                     >
                                         {/* Dynamic Content based on which card is at the index */}
                                         {index === 0 && (
-                                            <div className="h-full flex flex-col justify-between">
-                                                <div className="space-y-8">
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="w-16 h-16 rounded-3xl bg-accent flex items-center justify-center shadow-glow-purple ring-1 ring-white/20">
-                                                            <Link2 size={32} className="text-white" />
-                                                        </div>
-                                                        <div className="px-5 py-2 bg-accent/20 rounded-full border border-accent/30 text-xs text-accent-light font-black uppercase tracking-[0.2em]">
-                                                            Linkly Pro
+                                            <div className="h-full flex flex-col space-y-6">
+                                                {/* Header */}
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <h3 className="text-xl font-bold text-white mb-1">Your Links</h3>
+                                                        <p className="text-tertiary text-xs">Last 24 hours</p>
+                                                    </div>
+                                                    <MoreHorizontal size={20} className="text-tertiary cursor-pointer hover:text-white transition-colors" />
+                                                </div>
+
+                                                {/* Stats Grid */}
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="bg-[#1c1c24] border border-white/5 p-4 rounded-2xl">
+                                                        <p className="text-tertiary text-xs mb-2">Link Clicks</p>
+                                                        <div className="flex items-baseline gap-2">
+                                                            <span className="text-2xl font-black text-white">1,247</span>
+                                                            <span className="text-accent-light text-[10px] font-bold">+12.5%</span>
                                                         </div>
                                                     </div>
-                                                    <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight underline decoration-accent/40 underline-offset-8 font-serif">linkly.site/premium</h3>
-                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Elevate your presence with enterprise-grade Linkly branding.</p>
+                                                    <div className="bg-[#1c1c24] border border-white/5 p-4 rounded-2xl">
+                                                        <p className="text-tertiary text-xs mb-2">Created Today</p>
+                                                        <div className="flex items-baseline gap-2">
+                                                            <span className="text-2xl font-black text-white">8</span>
+                                                            <span className="text-accent-light text-[10px] font-bold">+3 new</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="bg-[#1c1c24] border border-accent/20 rounded-[32px] p-6 shadow-2xl mt-8 ring-1 ring-white/10">
-                                                    <div className="w-full h-40 bg-[#0f0f12] flex items-center justify-center border-2 border-dashed border-accent/20 rounded-2xl">
-                                                        <Globe size={64} className="text-accent/20 animate-pulse" />
-                                                    </div>
+
+                                                {/* Chart */}
+                                                <div className="bg-[#1c1c24] border border-white/5 p-5 rounded-2xl h-36 flex items-end justify-between gap-1.5">
+                                                    {[40, 65, 35, 80, 55, 95, 75, 60].map((h, i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            initial={{ height: 0 }}
+                                                            animate={{ height: `${h}%` }}
+                                                            transition={{ delay: 0.1 * i, duration: 0.8, ease: "easeOut" }}
+                                                            className="flex-1 bg-accent/60 rounded-lg hover:bg-accent transition-colors"
+                                                        />
+                                                    ))}
+                                                </div>
+
+                                                {/* Link List */}
+                                                <div className="space-y-3">
+                                                    {[
+                                                        { label: 'link.ly/offer', clicks: '127 clicks' },
+                                                        { label: 'link.ly/resume', clicks: '89 clicks' },
+                                                        { label: 'link.ly/github', clicks: '64 clicks' }
+                                                    ].map((link, i) => (
+                                                        <div key={i} className="flex items-center gap-4 bg-[#1c1c24] border border-white/5 p-3 rounded-2xl group hover:border-accent/30 transition-all cursor-pointer">
+                                                            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
+                                                                <Link2 size={16} className="text-accent" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-white text-sm font-bold mb-0.5 group-hover:text-accent transition-colors">{link.label}</p>
+                                                                <p className="text-tertiary text-[10px]">{link.clicks}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         )}
 
                                         {index === 1 && (
-                                            <div className="h-full flex flex-col justify-between">
-                                                <div className="space-y-8">
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="w-16 h-16 rounded-3xl bg-indigo-500 flex items-center justify-center shadow-glow-blue ring-1 ring-white/20">
-                                                            <BarChart3 size={32} className="text-white" />
-                                                        </div>
-                                                        <div className="px-5 py-2 bg-indigo-500/20 rounded-full border border-indigo-500/30 text-xs text-indigo-400 font-black uppercase tracking-[0.2em]">
-                                                            Live Stats
-                                                        </div>
+                                            <div className="h-full flex flex-col space-y-6">
+                                                {/* Header */}
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <h3 className="text-xl font-bold text-white mb-1">Global Impact</h3>
+                                                        <p className="text-tertiary text-xs">Real-time tracking</p>
                                                     </div>
-                                                    <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight">1.4B Clicks</h3>
-                                                        <p className="text-secondary text-lg font-medium">Real-time geographic insights and campaign tracking at scale.</p>
+                                                    <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+                                                        <BarChart3 size={20} className="text-indigo-400" />
                                                     </div>
                                                 </div>
-                                                <div className="h-48 flex items-end gap-3 px-2">
-                                                    {[50, 80, 45, 95, 65, 100, 85].map((h, i) => (
-                                                        <motion.div
-                                                            key={i}
-                                                            initial={{ height: 0 }}
-                                                            animate={{ height: `${h}%` }}
-                                                            className="flex-1 bg-gradient-to-t from-accent/50 to-accent rounded-t-xl"
-                                                        />
+
+                                                {/* Hero Stat */}
+                                                <div className="bg-indigo-500/5 border border-indigo-500/10 p-6 rounded-3xl text-center">
+                                                    <p className="text-indigo-400 text-xs font-bold uppercase tracking-widest mb-2">Total Impressions</p>
+                                                    <h3 className="text-5xl font-black text-white">1.4B+</h3>
+                                                </div>
+
+                                                {/* Geographic breakdown */}
+                                                <div className="space-y-4 flex-1">
+                                                    {[
+                                                        { city: 'New York', val: 85, color: 'bg-indigo-500' },
+                                                        { city: 'London', val: 65, color: 'bg-purple-500' },
+                                                        { city: 'Tokyo', val: 45, color: 'bg-accent' }
+                                                    ].map((loc, i) => (
+                                                        <div key={i} className="space-y-2">
+                                                            <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight">
+                                                                <span className="text-white">{loc.city}</span>
+                                                                <span className="text-tertiary">{loc.val}%</span>
+                                                            </div>
+                                                            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                                                <motion.div
+                                                                    initial={{ width: 0 }}
+                                                                    animate={{ width: `${loc.val}%` }}
+                                                                    transition={{ delay: 0.5 + (0.1 * i), duration: 1 }}
+                                                                    className={`h-full ${loc.color}`}
+                                                                />
+                                                            </div>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </div>
                                         )}
 
                                         {index === 2 && (
-                                            <div className="h-full flex flex-col justify-between">
-                                                <div className="space-y-8">
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="w-16 h-16 rounded-3xl bg-green-500 flex items-center justify-center shadow-glow-green ring-1 ring-white/20">
-                                                            <ShieldCheck size={32} className="text-white" />
-                                                        </div>
-                                                        <div className="px-5 py-2 bg-green-500/20 rounded-full border border-green-500/30 text-xs text-green-400 font-black uppercase tracking-[0.2em]">
-                                                            Verified
-                                                        </div>
+                                            <div className="h-full flex flex-col space-y-6">
+                                                {/* Header */}
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <h3 className="text-xl font-bold text-white mb-1">Security Core</h3>
+                                                        <p className="text-tertiary text-xs">Enterprise Shield Active</p>
                                                     </div>
-                                                    <div className="space-y-4">
-                                                        <h3 className="text-4xl font-black text-white leading-tight">Secure. Verified.</h3>
-                                                        <p className="text-secondary text-lg font-medium leading-[1.6]">Enterprise-grade protection. Every link is encrypted and verified for safety.</p>
+                                                    <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center border border-green-500/30">
+                                                        <ShieldCheck size={20} className="text-green-400" />
                                                     </div>
                                                 </div>
-                                                <div className="space-y-4">
-                                                    {[1, 2, 3].map((_, i) => (
-                                                        <div key={i} className="flex items-center justify-between bg-[#1c1c24] rounded-2xl px-6 py-4 border border-accent/10 ring-1 ring-white/5">
-                                                            <div className="w-2/3 h-2 bg-accent/40 rounded-full"></div>
-                                                            <Check size={18} className="text-green-400" />
+
+                                                {/* Protection Stats */}
+                                                <div className="flex gap-4">
+                                                    <div className="flex-1 bg-green-500/5 border border-green-500/10 p-4 rounded-2xl text-center">
+                                                        <p className="text-green-400 text-[10px] font-bold uppercase mb-1">Threats Blocked</p>
+                                                        <p className="text-xl font-black text-white">42.8k</p>
+                                                    </div>
+                                                    <div className="flex-1 bg-green-500/5 border border-green-500/10 p-4 rounded-2xl text-center">
+                                                        <p className="text-green-400 text-[10px] font-bold uppercase mb-1">Uptime</p>
+                                                        <p className="text-xl font-black text-white">99.99%</p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Security Logs */}
+                                                <div className="space-y-3 flex-1">
+                                                    {[
+                                                        { msg: 'SSL Certificate Verified', status: 'Secure' },
+                                                        { msg: 'DDoS Protection Active', status: 'Live' },
+                                                        { msg: 'Phishing Filter Updated', status: 'Updated' }
+                                                    ].map((log, i) => (
+                                                        <div key={i} className="flex items-center justify-between bg-[#1c1c24] border border-white/5 p-4 rounded-2xl">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                                                                <span className="text-white text-[11px] font-medium">{log.msg}</span>
+                                                            </div>
+                                                            <span className="text-green-400 text-[9px] font-black uppercase tracking-wider">{log.status}</span>
                                                         </div>
                                                     ))}
                                                 </div>
