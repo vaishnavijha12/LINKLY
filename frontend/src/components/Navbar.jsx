@@ -42,12 +42,12 @@ const Navbar = () => {
                                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-light transition-all duration-200 group-hover:w-full"></span>
                             </Link>
                             <div className="flex items-center space-x-8 pl-8 border-l border-divider">
-                                <div className="flex items-center space-x-3 group cursor-pointer">
+                                <Link to="/profile" className="flex items-center space-x-3 group cursor-pointer">
                                     <div className="w-10 h-10 rounded-full bg-glass-bg border border-glass-border flex items-center justify-center group-hover:border-accent/40 transition-all duration-200 shadow-glass backdrop-blur-glass">
                                         <User size={18} className="text-secondary group-hover:text-accent-light transition-colors" />
                                     </div>
                                     <span className="text-sm font-medium text-secondary group-hover:text-white transition-colors">{user.username}</span>
-                                </div>
+                                </Link>
                                 <button
                                     onClick={handleLogout}
                                     className="text-secondary hover:text-red-400 transition-all hover:scale-110 transform duration-200"
