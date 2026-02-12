@@ -17,6 +17,14 @@ function App() {
     const [helpPanelState, setHelpPanelState] = useState({ isOpen: false, activePage: 'docs' });
     const location = useLocation();
 
+    useEffect(() => {
+        document.title = "Linkly | Secure URL Shortener";
+        const favicon = document.querySelector("link[rel*='icon']");
+        if (favicon) {
+            favicon.href = "/favicon.svg";
+        }
+    }, []);
+
     const openHelp = (page) => {
         setHelpPanelState({ isOpen: true, activePage: page });
     };
