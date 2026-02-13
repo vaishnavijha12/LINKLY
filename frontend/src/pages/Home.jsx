@@ -125,28 +125,28 @@ const Home = () => {
     return (
         <div className="selection:bg-accent/30 overflow-x-hidden">
             {/* Main Full-Width Hero Container */}
-            <div className="relative z-10 min-h-[95vh] flex items-center justify-center py-20 px-6 lg:px-12">
+            <div className="relative z-10 min-h-[90vh] md:min-h-[95vh] flex items-center justify-center py-10 md:py-20 px-4 sm:px-6 lg:px-12">
                 {/* Immersive Background Glows (not constrained by a box) */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] pointer-events-none -z-10">
-                    <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px] animate-pulse"></div>
-                    <div className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] bg-purple-900/10 rounded-full blur-[120px]"></div>
+                    <div className="absolute top-[20%] right-[10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-accent/10 rounded-full blur-[100px] md:blur-[150px] animate-pulse"></div>
+                    <div className="absolute bottom-[20%] left-[10%] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-purple-900/10 rounded-full blur-[80px] md:blur-[120px]"></div>
                 </div>
 
                 <div className="max-w-[1440px] w-full mx-auto">
                     {/* Main Content Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-8 items-center">
                         {/* LEFT: Content & Tool (Expansive) */}
-                        <div className="space-y-8 lg:pr-12">
+                        <div className="space-y-6 md:space-y-8 lg:pr-12">
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                                 className="space-y-4 text-center lg:text-left"
                             >
-                                <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.1] tracking-tight">
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.1] tracking-tight">
                                     Shorten with <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-light">Vision.</span>
                                 </h1>
-                                <p className="text-lg md:text-xl text-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+                                <p className="text-base sm:text-lg md:text-xl text-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
                                     Turn long, cluttered links into beautiful, trackable assets. Built for impact and visibility.
                                 </p>
                             </motion.div>
@@ -157,7 +157,7 @@ const Home = () => {
                                 className="max-w-xl mx-auto lg:mx-0"
                             >
                                 {!shortUrl ? (
-                                    <div className="space-y-6">
+                                    <div className="space-y-4 md:space-y-6">
                                         <div className="relative group">
                                             <input
                                                 id="url-input"
@@ -166,41 +166,41 @@ const Home = () => {
                                                 value={url}
                                                 onChange={(e) => setUrl(e.target.value)}
                                                 onKeyDown={(e) => e.key === 'Enter' && handleShorten(e)}
-                                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-lg pr-16 shadow-2xl backdrop-blur-sm"
+                                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-base sm:text-lg pr-14 sm:pr-16 shadow-2xl backdrop-blur-sm"
                                                 disabled={loading}
                                             />
                                             <button
                                                 onClick={handleShorten}
                                                 disabled={loading}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-accent text-white rounded-xl hover:bg-accent-light transition-all duration-200 disabled:opacity-50"
+                                                className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-accent text-white rounded-xl hover:bg-accent-light transition-all duration-200 disabled:opacity-50"
                                             >
-                                                {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <ArrowRight size={24} />}
+                                                {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />}
                                             </button>
                                         </div>
 
-                                        <div className="flex flex-col md:flex-row gap-4">
+                                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                             <div className="relative flex-1 group">
                                                 <input
                                                     type="text"
                                                     placeholder="Tag (optional)"
                                                     value={tag}
                                                     onChange={(e) => setTag(e.target.value)}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-3.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/40 transition-all text-sm pr-12 backdrop-blur-sm"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 sm:px-6 py-3 sm:py-3.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/40 transition-all text-sm pr-12 backdrop-blur-sm"
                                                     disabled={loading}
                                                 />
-                                                <Tag size={18} className="absolute right-5 top-1/2 -translate-y-1/2 text-tertiary group-focus-within:text-accent transition-colors" />
+                                                <Tag size={16} className="absolute right-5 top-1/2 -translate-y-1/2 text-tertiary group-focus-within:text-accent transition-colors" />
                                             </div>
                                             <button
                                                 onClick={() => setIsModalOpen(true)}
-                                                className="px-6 py-3.5 bg-glass-bg border border-glass-border rounded-2xl text-secondary hover:text-white hover:border-accent/50 transition-all text-xs font-bold uppercase tracking-widest backdrop-blur-sm shadow-xl"
+                                                className="px-6 py-3 sm:py-3.5 bg-glass-bg border border-glass-border rounded-2xl text-secondary hover:text-white hover:border-accent/50 transition-all text-[10px] sm:text-xs font-bold uppercase tracking-widest backdrop-blur-sm shadow-xl"
                                             >
                                                 Branded Link
                                             </button>
                                         </div>
 
-                                        <p className="text-secondary text-sm flex items-center justify-center lg:justify-start gap-3 opacity-60">
-                                            <Check size={14} className="text-green-400" />
-                                            No tracking • No ads • Reliable for life
+                                        <p className="text-secondary text-xs sm:text-sm flex items-center justify-center lg:justify-start gap-2 sm:gap-3 opacity-60">
+                                            <Check size={12} className="text-green-400" />
+                                            Professional • Secure • Instant
                                         </p>
                                     </div>
                                 ) : (
@@ -208,28 +208,28 @@ const Home = () => {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.5 }}
-                                        className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-2xl backdrop-blur-sm space-y-4"
+                                        className="bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 shadow-2xl backdrop-blur-sm space-y-4"
                                     >
-                                        <p className="text-sm text-tertiary">Your shortened URL:</p>
-                                        <div className="flex items-center justify-between bg-white/10 rounded-xl pr-2">
+                                        <p className="text-xs sm:text-sm text-tertiary">Your shortened URL:</p>
+                                        <div className="flex items-center justify-between bg-white/10 rounded-xl pr-1.5 sm:pr-2">
                                             <a
                                                 href={`${BACKEND_URL}/${shortUrl}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 px-4 py-3 text-white text-lg truncate hover:text-accent transition-colors"
+                                                className="flex-1 px-3 sm:px-4 py-3 text-white text-base sm:text-lg truncate hover:text-accent transition-colors"
                                             >
                                                 {BACKEND_URL}/{shortUrl}
                                             </a>
                                             <button
                                                 onClick={handleCopy}
-                                                className="p-3 bg-accent text-white rounded-lg hover:bg-accent-light transition-all duration-200"
+                                                className="p-2.5 sm:p-3 bg-accent text-white rounded-lg hover:bg-accent-light transition-all duration-200"
                                             >
-                                                {copied ? <Check size={20} /> : <Copy size={20} />}
+                                                {copied ? <Check size={18} className="sm:w-5 sm:h-5" /> : <Copy size={18} className="sm:w-5 sm:h-5" />}
                                             </button>
                                         </div>
                                         <button
                                             onClick={() => setShortUrl(null)}
-                                            className="w-full py-3 text-accent-light hover:text-accent transition-colors font-medium"
+                                            className="w-full py-2.5 sm:py-3 text-accent-light hover:text-accent transition-colors font-medium text-sm sm:text-base"
                                         >
                                             Shorten another link
                                         </button>
@@ -444,25 +444,25 @@ const Home = () => {
             {/* Continue with existing sections below */}
             <div className="relative z-10 max-w-5xl mx-auto px-6">
                 {/* SECTION 2: CONTEXT */}
-                <section className="py-20 flex flex-col items-center text-center">
-                    <h2 className="text-section md:text-section-lg font-semibold mb-6 text-white">
+                <section className="py-12 md:py-20 flex flex-col items-center text-center">
+                    <h2 className="text-2xl sm:text-3xl md:text-section lg:text-section-lg font-semibold mb-4 sm:mb-6 text-white leading-tight">
                         This is more than a short link.
                     </h2>
-                    <p className="text-lg text-secondary max-w-2xl leading-relaxed">
+                    <p className="text-base sm:text-lg text-secondary max-w-2xl leading-relaxed">
                         Organize, customize, and manage everything in one place.
                         Turn your links into powerful tools for your workflow.
                     </p>
                 </section>
 
                 {/* SECTION 3: EXPLORE FEATURES */}
-                <section className="py-20">
-                    <div className="mb-12">
-                        <h2 className="text-section md:text-section-lg font-semibold text-white">
+                <section className="py-12 md:py-20">
+                    <div className="mb-8 md:mb-12">
+                        <h2 className="text-2xl sm:text-3xl md:text-section lg:text-section-lg font-semibold text-white">
                             Explore Features
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {features.map((feature, index) => (
                             <FeatureCard key={index} {...feature} index={index} />
                         ))}
@@ -470,12 +470,12 @@ const Home = () => {
                 </section>
 
                 {/* SECTION 4: QUICK ACCESS / FLOW */}
-                <section className="py-20 flex flex-col items-center text-center">
-                    <h3 className="text-xl font-medium text-white mb-10">Pick a tool to continue.</h3>
-                    <div className="flex gap-5">
+                <section className="py-12 md:py-20 flex flex-col items-center text-center">
+                    <h3 className="text-lg sm:text-xl font-medium text-white mb-6 md:mb-10">Pick a tool to continue.</h3>
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
                         <Link
                             to="/dashboard"
-                            className="px-10 py-4 rounded-full font-semibold border border-glass-border bg-glass-bg text-white hover:border-accent/30 hover:shadow-glow-purple-sm transition-all duration-200"
+                            className="px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-semibold border border-glass-border bg-glass-bg text-white hover:border-accent/30 hover:shadow-glow-purple-sm transition-all duration-200 text-center"
                         >
                             View All Links
                         </Link>

@@ -3,17 +3,21 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
-import api from "../utils/api"; // Added for username check endpoint
+import api from "../utils/api";
 
 const Register = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [securityQuestion, setSecurityQuestion] = useState("");
+    const [securityAnswer, setSecurityAnswer] = useState("");
     const { register, googleLogin } = useContext(AuthContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [usernameStatus, setUsernameStatus] = useState({ available: null, checking: false });
+    const [strength, setStrength] = useState({ score: 0, label: "", color: "bg-tertiary" });
 
     const handleGoogleSuccess = async (credentialResponse) => {
         setLoading(true);
@@ -27,10 +31,7 @@ const Register = () => {
             setLoading(false);
         }
     };
-    const [usernameStatus, setUsernameStatus] = useState({ available: null, checking: false });
-    const [strength, setStrength] = useState({ score: 0, label: "", color: "bg-tertiary" });
 
-    // Handle Password Strength
     const checkPasswordStrength = (pass) => {
         let score = 0;
         if (pass.length === 0) return { score: 0, label: "", color: "bg-tertiary" };
@@ -51,7 +52,6 @@ const Register = () => {
         setStrength(checkPasswordStrength(val));
     };
 
-    // Handle Username Uniqueness (Debounced)
     useEffect(() => {
         if (username.length < 3) {
             setUsernameStatus({ available: null, checking: false });
@@ -84,9 +84,14 @@ const Register = () => {
             return;
         }
 
+        if (!securityQuestion || !securityAnswer) {
+            toast.error("Please select a security question and provide an answer");
+            return;
+        }
+
         setLoading(true);
         try {
-            await register(username, email, password);
+            await register(username, email, password, securityQuestion, securityAnswer);
             toast.success("Account created successfully!");
             navigate("/login");
         } catch (error) {
@@ -97,20 +102,19 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[85vh] px-6">
+        <div className="flex items-center justify-center min-h-[85vh] px-4 sm:px-6 py-10">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full max-w-md bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[32px] p-10 shadow-glass relative overflow-hidden group"
+                className="w-full max-w-md bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] p-6 sm:p-10 shadow-glass relative overflow-hidden group"
             >
-                {/* Accent Glow */}
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-accent/20 transition-colors duration-500"></div>
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/10 rounded-full blur-[80px] pointer-events-none"></div>
 
-                <div className="mb-10 text-center relative z-10">
-                    <div className="text-xs text-secondary uppercase tracking-[0.2em] mb-4 font-semibold opacity-70">GET STARTED</div>
-                    <h2 className="text-4xl font-bold mb-3 text-white tracking-tight leading-tight">Join Us.</h2>
-                    <p className="text-secondary text-sm font-light">Shorten links with professional glass styling</p>
+                <div className="mb-8 text-center relative z-10">
+                    <div className="text-[10px] text-secondary uppercase tracking-[0.2em] mb-4 font-bold opacity-70">GET STARTED</div>
+                    <h2 className="text-3xl sm:text-4xl font-black mb-2 text-white tracking-tight">Join Us.</h2>
+                    <p className="text-secondary text-sm font-medium opacity-80">Shorten links with professional styling</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6 relative z-10">
@@ -120,53 +124,87 @@ const Register = () => {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className={`w-full bg-black/40 border ${usernameStatus.available === false ? 'border-red-500/50' : usernameStatus.available === true ? 'border-green-500/50' : 'border-glass-border'} rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-base`}
+                                className={`w-full bg-black/40 border ${usernameStatus.available === false ? 'border-red-500/50' : usernameStatus.available === true ? 'border-green-500/50' : 'border-glass-border'} rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm font-medium`}
                                 placeholder="Username"
                                 required
                             />
-                            {usernameStatus.checking && <div className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full"></div>}
-                            {usernameStatus.available === true && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500 text-xs font-bold">AVAILABLE</div>}
-                            {usernameStatus.available === false && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-xs font-bold">TAKEN</div>}
+                            {usernameStatus.checking && <div className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin w-3.5 h-3.5 border-2 border-accent border-t-transparent rounded-full"></div>}
+                            {usernameStatus.available === true && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500 text-[10px] font-black">AVAILABLE</div>}
+                            {usernameStatus.available === false && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-[10px] font-black">TAKEN</div>}
                         </div>
+
                         <div className="relative">
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 focus:shadow-glow-purple-sm transition-all text-base"
+                                className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm font-medium"
                                 placeholder="Email Address"
                                 required
                             />
                         </div>
+
                         <div className="relative space-y-3">
                             <input
                                 type="password"
                                 value={password}
                                 onChange={handlePasswordChange}
-                                className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all text-base"
+                                className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm font-medium"
                                 placeholder="Password"
                                 required
                             />
-
                             {password.length > 0 && (
                                 <div className="px-1 space-y-2">
-                                    <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
-                                        <span className="text-secondary">Password Strength</span>
+                                    <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest">
+                                        <span className="text-secondary opacity-60">Security Level</span>
                                         <span className={strength.score <= 1 ? "text-red-400" : strength.score <= 3 ? "text-yellow-400" : "text-green-400"}>
                                             {strength.label}
                                         </span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex gap-1">
+                                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden flex gap-1">
                                         {[...Array(4)].map((_, i) => (
-                                            <div
-                                                key={i}
-                                                className={`h-full flex-1 transition-all duration-500 ${i < strength.score ? strength.color : 'bg-white/5'}`}
-                                            ></div>
+                                            <div key={i} className={`h-full flex-1 transition-all duration-500 ${i < strength.score ? strength.color : 'bg-white/5'}`}></div>
                                         ))}
                                     </div>
-                                    <p className="text-[10px] text-tertiary font-medium">Use 8+ characters with a mix of letters, numbers & symbols</p>
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Account Recovery Section */}
+                    <div className="pt-6 border-t border-glass-border/20 space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <ShieldCheck size={14} className="text-accent-light" />
+                            <span className="text-[11px] font-black uppercase tracking-widest text-accent-light">Account Recovery</span>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="relative">
+                                <select
+                                    value={securityQuestion}
+                                    onChange={(e) => setSecurityQuestion(e.target.value)}
+                                    className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white focus:outline-none focus:border-accent/50 transition-all text-sm appearance-none"
+                                    required
+                                >
+                                    <option value="" disabled className="bg-background text-secondary">Select recovery question</option>
+                                    <option value="What is your childhood nickname?" className="bg-background text-white">What is your childhood nickname?</option>
+                                    <option value="What is your birthplace?" className="bg-background text-white">What is your birthplace?</option>
+                                    <option value="What is your favorite book?" className="bg-background text-white">What is your favorite book?</option>
+                                    <option value="What was the name of your first pet?" className="bg-background text-white">What was the name of your first pet?</option>
+                                </select>
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-tertiary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                                </div>
+                            </div>
+
+                            <input
+                                type="text"
+                                value={securityAnswer}
+                                onChange={(e) => setSecurityAnswer(e.target.value)}
+                                className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 transition-all text-sm font-medium"
+                                placeholder="Your Answer"
+                                required
+                            />
                         </div>
                     </div>
 
@@ -174,7 +212,7 @@ const Register = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-gradient-to-r from-accent to-accent-dark text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:shadow-glow-purple-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 group/btn shadow-lg"
+                            className="w-full bg-gradient-to-r from-accent to-accent-dark text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:shadow-glow-purple-sm transition-all flex items-center justify-center gap-3 group/btn"
                         >
                             <span className="relative z-10">{loading ? "Creating..." : "Create Account"}</span>
                             {!loading && <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform relative z-10" />}
@@ -182,7 +220,7 @@ const Register = () => {
 
                         <div className="relative flex items-center py-2">
                             <div className="flex-grow border-t border-glass-border"></div>
-                            <span className="flex-shrink mx-4 text-xs text-tertiary uppercase tracking-widest font-bold">OR</span>
+                            <span className="flex-shrink mx-4 text-[10px] text-tertiary uppercase tracking-widest font-bold">OR</span>
                             <div className="flex-grow border-t border-glass-border"></div>
                         </div>
 
@@ -198,9 +236,9 @@ const Register = () => {
                 </form>
 
                 <div className="text-center mt-10 relative z-10">
-                    <p className="text-secondary text-sm font-light">
+                    <p className="text-secondary text-sm font-medium opacity-80">
                         Already a member?{" "}
-                        <Link to="/login" className="text-accent-light hover:text-accent font-medium transition-colors hover:underline underline-offset-4">
+                        <Link to="/login" className="text-accent-light hover:text-accent transition-colors hover:underline underline-offset-4">
                             Log In
                         </Link>
                     </p>

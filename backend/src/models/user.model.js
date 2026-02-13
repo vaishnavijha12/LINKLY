@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema(
             type: String,
             unique: true,
             sparse: true, // Allows multiple null/undefined values despite uniqueness
+        },
+        securityQuestion: {
+            type: String,
+            required: function () {
+                return !this.googleId;
+            }
+        },
+        securityAnswer: {
+            type: String,
+            required: function () {
+                return !this.googleId;
+            }
         }
     },
     { timestamps: true }

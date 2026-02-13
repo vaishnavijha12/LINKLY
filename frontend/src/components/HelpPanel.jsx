@@ -394,17 +394,17 @@ const HelpPanel = ({ isOpen, onClose, activePage }) => {
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
                         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                        className="fixed right-0 top-0 bottom-0 w-full max-w-[480px] bg-[#0A0A0A] border-l border-white/10 z-[101] shadow-2xl flex flex-col"
+                        className="fixed right-0 top-0 bottom-0 w-full sm:max-w-[480px] bg-[#0A0A0A] border-l border-white/10 z-[101] shadow-2xl flex flex-col"
                     >
                         {/* Header */}
-                        <div className="p-8 border-b border-white/5 flex items-center justify-between bg-glass-bg backdrop-blur-md">
-                            <div className="flex items-center gap-4">
-                                <div className="p-2.5 bg-accent/10 rounded-xl text-accent ring-1 ring-accent/20">
-                                    <header.icon size={20} />
+                        <div className="p-6 sm:p-8 border-b border-white/5 flex items-center justify-between bg-glass-bg backdrop-blur-md">
+                            <div className="flex items-center gap-3 sm:gap-4">
+                                <div className="p-2 sm:p-2.5 bg-accent/10 rounded-xl text-accent ring-1 ring-accent/20">
+                                    <header.icon size={18} className="sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <h1 className="text-xl font-bold text-white tracking-tight">{header.title}</h1>
-                                    <p className="text-xs text-secondary font-light">Linkly Help Center</p>
+                                    <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight">{header.title}</h1>
+                                    <p className="text-[10px] sm:text-xs text-secondary font-medium opacity-60">Linkly Help Center</p>
                                 </div>
                             </div>
                             <button
@@ -416,15 +416,15 @@ const HelpPanel = ({ isOpen, onClose, activePage }) => {
                         </div>
 
                         {/* Content */}
-                        <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
+                        <div className="flex-grow overflow-y-auto p-6 sm:p-8 custom-scrollbar">
                             <div className="max-w-none">
                                 {renderContent()}
                             </div>
                         </div>
 
                         {/* Footer */}
-                        <div className="p-6 border-t border-white/5 text-center bg-black/40">
-                            <p className="text-[10px] text-tertiary uppercase tracking-widest font-bold">
+                        <div className="p-5 sm:p-6 border-t border-white/5 text-center bg-black/40">
+                            <p className="text-[9px] sm:text-[10px] text-tertiary uppercase tracking-widest font-black opacity-60">
                                 Need more help? Support@linkly.com
                             </p>
                         </div>

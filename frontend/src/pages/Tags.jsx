@@ -57,45 +57,45 @@ const Tags = () => {
     }
 
     return (
-        <div className="relative z-10 pt-[70px] pb-20 px-6">
+        <div className="relative z-10 pt-[70px] pb-20 px-4 sm:px-6">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="max-w-6xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass p-8 md:p-12 overflow-hidden"
+                className="max-w-6xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass p-6 sm:p-8 md:p-12 overflow-hidden"
             >
                 {/* Header */}
-                <div className="mb-12">
+                <div className="mb-10 sm:mb-12">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="flex items-center gap-3 mb-2"
                     >
-                        <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                            <Filter size={24} className="text-accent" />
+                        <div className="p-2.5 sm:p-3 bg-white/5 rounded-xl border border-white/10">
+                            <Filter size={20} className="text-accent sm:w-6 sm:h-6" />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-bold tracking-tight">Tags & Filters</h1>
-                            <p className="text-secondary text-sm">Organize and access your links by category</p>
+                            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Tags</h1>
+                            <p className="text-secondary text-[11px] sm:text-sm">Organize and discover your links</p>
                         </div>
                     </motion.div>
                 </div>
 
                 {/* Tags Overview (Cloud) */}
-                <section className="mb-16">
-                    <h2 className="text-xs uppercase tracking-wider text-secondary font-semibold mb-6 flex items-center gap-2">
-                        <Hash size={12} /> Available Tags
+                <section className="mb-12 sm:mb-16">
+                    <h2 className="text-[10px] uppercase tracking-wider text-secondary font-bold mb-4 sm:mb-6 flex items-center gap-2">
+                        <Hash size={10} /> Active Categories
                     </h2>
 
                     {sortedTags.length === 0 ? (
                         <div className="text-center py-12 bg-black/20 rounded-2xl border border-dashed border-glass-border">
-                            <p className="text-secondary mb-4">You haven't created any tags yet.</p>
-                            <a href="/" className="text-white text-sm font-medium hover:underline flex items-center justify-center gap-2">
+                            <p className="text-secondary text-sm mb-4">You haven't created any tags yet.</p>
+                            <a href="/" className="text-white text-xs font-bold hover:underline flex items-center justify-center gap-2 uppercase tracking-widest">
                                 Create a link with tags <ArrowRight size={14} />
                             </a>
                         </div>
                     ) : (
-                        <div className="flex flex-wrap gap-3">
+                        <div className="flex flex-wrap gap-2 sm:gap-3">
                             {sortedTags.map(([tagName, count]) => (
                                 <motion.button
                                     key={tagName}
@@ -105,13 +105,13 @@ const Tags = () => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className={`group relative px-5 py-3 rounded-xl border transition-all duration-200 flex items-center gap-3 ${selectedTag === tagName
+                                    className={`group relative px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border transition-all duration-200 flex items-center gap-2.5 sm:gap-3 ${selectedTag === tagName
                                         ? 'bg-gradient-to-r from-accent to-accent-dark text-white border-accent shadow-glow-purple-sm'
                                         : 'bg-black/40 text-secondary border-glass-border hover:border-accent/30 hover:text-accent-light'
                                         }`}
                                 >
-                                    <span className="font-medium">{tagName}</span>
-                                    <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${selectedTag === tagName
+                                    <span className="text-xs sm:text-sm font-bold uppercase tracking-wide">{tagName}</span>
+                                    <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${selectedTag === tagName
                                         ? 'bg-black/10 text-white'
                                         : 'bg-white/10 text-secondary group-hover:text-white'
                                         }`}>
@@ -133,52 +133,58 @@ const Tags = () => {
                             exit={{ opacity: 0, y: 20 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <div className="flex items-center justify-between mb-6 pt-6 border-t border-glass-border">
-                                <h2 className="text-xl font-medium text-white flex items-center gap-2">
-                                    <span className="text-secondary">Links in</span>
-                                    <span className="text-white border-b border-accent/20 pb-0.5">{selectedTag}</span>
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pt-6 border-t border-glass-border">
+                                <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                                    <span className="text-secondary font-medium">Results in</span>
+                                    <span className="text-accent-light px-2 py-0.5 bg-accent/10 rounded-lg">{selectedTag}</span>
                                 </h2>
-                                <span className="text-xs text-secondary bg-black/40 px-3 py-1 rounded-full border border-glass-border">
-                                    {filteredUrls.length} Result{filteredUrls.length !== 1 && 's'}
+                                <span className="text-[10px] font-black uppercase tracking-widest text-secondary bg-black/40 px-3 py-1.5 rounded-lg border border-glass-border self-start sm:self-auto">
+                                    {filteredUrls.length} {filteredUrls.length === 1 ? 'Link' : 'Links'} found
                                 </span>
                             </div>
 
-                            <div className="grid gap-4">
+                            <div className="grid gap-3 sm:gap-4">
                                 {filteredUrls.map((url) => (
                                     <motion.div
                                         key={url._id}
                                         layout
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        className="group bg-black/20 border border-glass-border rounded-xl p-5 hover:border-accent/30 transition-all duration-300 hover:bg-black/40"
+                                        className="group bg-black/20 border border-glass-border rounded-2xl p-4 sm:p-5 hover:border-accent/30 transition-all duration-300 hover:bg-black/40 shadow-xl"
                                     >
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                            <div className="overflow-hidden">
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <a
-                                                        href={`${BACKEND_URL}/${url.shortUrl}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-lg font-mono text-white hover:text-accent-light transition-colors flex items-center gap-2"
-                                                    >
-                                                        /{url.shortUrl}
-                                                        <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity text-secondary" />
-                                                    </a>
-                                                </div>
-                                                <p className="text-sm text-secondary truncate max-w-md font-light flex items-center gap-2">
-                                                    <LinkIcon size={12} className="shrink-0" />
+                                            <div className="overflow-hidden space-y-1.5">
+                                                <a
+                                                    href={`${BACKEND_URL}/${url.shortUrl}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-base sm:text-lg font-bold text-white hover:text-accent-light transition-colors flex items-center gap-2 group/link"
+                                                >
+                                                    /{url.shortUrl}
+                                                    <ExternalLink size={14} className="opacity-0 group-hover/link:opacity-100 transition-opacity text-secondary" />
+                                                </a>
+                                                <p className="text-[10px] sm:text-xs text-secondary truncate max-w-full sm:max-w-md font-mono flex items-center gap-2 opacity-60">
+                                                    <LinkIcon size={10} className="shrink-0" />
                                                     {url.originalUrl}
                                                 </p>
                                             </div>
 
-                                            <div className="flex items-center gap-2 self-start sm:self-center">
+                                            <div className="flex items-center gap-2 sm:self-center border-t sm:border-t-0 border-white/5 pt-3 sm:pt-0">
                                                 <button
                                                     onClick={() => copyToClipboard(url.shortUrl)}
-                                                    className="p-2 text-secondary hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                                                    title="Copy Short Link"
+                                                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white/5 text-secondary hover:text-white hover:bg-white/10 rounded-lg transition-colors text-[10px] font-bold uppercase tracking-widest"
                                                 >
-                                                    <Copy size={18} />
+                                                    <Copy size={14} />
+                                                    <span className="sm:hidden">Copy</span>
                                                 </button>
+                                                <a
+                                                    href={`${BACKEND_URL}/${url.shortUrl}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="sm:flex-none p-2 text-secondary hover:text-accent-light transition-colors"
+                                                >
+                                                    <ExternalLink size={18} />
+                                                </a>
                                             </div>
                                         </div>
                                     </motion.div>
@@ -192,9 +198,12 @@ const Tags = () => {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center py-20 text-secondary"
+                        className="text-center py-16 sm:py-20 text-secondary"
                     >
-                        <p>Select a tag above to view associated links.</p>
+                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 opacity-20">
+                            <Tag size={24} />
+                        </div>
+                        <p className="text-sm font-medium">Select a category above to filter your workspace.</p>
                     </motion.div>
                 )}
             </motion.div>

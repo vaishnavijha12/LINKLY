@@ -7,7 +7,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, securityQuestion, securityAnswer } = req.body;
 
         if (password.length < 8) {
             return res.status(400).json({ message: "Password must be at least 8 characters long" });
@@ -24,15 +24,65 @@ export const register = async (req, res) => {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedAnswer = await bcrypt.hash(securityAnswer.toLowerCase(), salt);
 
         const newUser = new User({
             username,
             email,
             password: hashedPassword,
+            securityQuestion,
+            securityAnswer: hashedAnswer,
         });
 
         await newUser.save();
         res.status(201).json({ message: "User created successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (user.googleId) {
+            return res.status(400).json({ message: "Google accounts do not have security questions. Please login with Google." });
+        }
+
+        res.status(200).json({ securityQuestion: user.securityQuestion });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { email, securityAnswer, newPassword } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const isMatch = await bcrypt.compare(securityAnswer.toLowerCase(), user.securityAnswer);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Incorrect security answer" });
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(400).json({ message: "Password must be at least 8 characters long" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+        await user.save();
+
+        res.status(200).json({ message: "Password reset successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }

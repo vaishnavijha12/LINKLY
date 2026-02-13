@@ -71,124 +71,147 @@ const Dashboard = () => {
     // Filter Logic
     const uniqueTags = ["All", ...new Set(urls.flatMap(url => url.tags || []))];
     const filteredUrls = selectedTag === "All"
-        ? urls
-        : urls.filter(url => url.tags?.includes(selectedTag));
+    // Filter Logic (updated)
+    const filteredUrls = urls.filter(url => {
+        const matchesTag = selectedTag ? url.tags?.includes(selectedTag) : true;
+        const matchesSearch = searchTerm
+            ? url.originalUrl.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            url.shortUrl.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            url.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+            : true;
+        return matchesTag && matchesSearch;
+    });
+
+    // Helper function for date formatting
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     if (loading) return <div className="text-center mt-20 text-white animate-pulse">Syncing...</div>;
 
     return (
-        <div className="relative z-10 pt-[70px] pb-20 px-6">
-            <div className="max-w-6xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass p-8 md:p-12 overflow-hidden">
-                {/* Header section with Stats */}
-                <div className="mb-12">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-glass-border pb-8">
-                        <div>
-                            <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Overview</h2>
-                            <p className="text-secondary font-light">Your link performance at a glance.</p>
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="glass-panel px-6 py-4 rounded-2xl flex flex-col items-center justify-center min-w-[120px]">
-                                <span className="text-[10px] uppercase tracking-widest text-secondary font-bold mb-1">Total Links</span>
-                                <span className="text-3xl font-mono text-white">{urls.length < 10 ? `0${urls.length}` : urls.length}</span>
-                            </div>
-                            <div className="glass-panel px-6 py-4 rounded-2xl flex flex-col items-center justify-center min-w-[120px] border-accent/20">
-                                <span className="text-[10px] uppercase tracking-widest text-secondary font-bold mb-1">Total Clicks</span>
-                                <span className="text-3xl font-mono text-white">
-                                    {urls.reduce((acc, curr) => acc + (curr.clicks || 0), 0)}
-                                </span>
-                            </div>
-                        </div>
+        <div className="relative z-10 pt-[70px] pb-20 px-4 sm:px-6">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="max-w-6xl mx-auto bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-[28px] shadow-glass p-6 sm:p-8 md:p-12 overflow-hidden"
+            >
+                {/* Stats Header */}
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10 border-b border-glass-border pb-8">
+                    <div className="space-y-2">
+                        <h1 className="text-3xl font-bold tracking-tight">Performance</h1>
+                        <p className="text-secondary text-sm">Real-time engagement discovery</p>
                     </div>
 
-                    {/* Tag Filters */}
-                    <div ref={tagsSectionRef} className="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
-                        <div className="p-2 bg-black/40 rounded-lg border border-glass-border shrink-0">
-                            <Filter size={16} className="text-secondary" />
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full lg:w-auto">
+                        <div className="bg-black/20 p-4 rounded-xl border border-glass-border">
+                            <p className="text-tertiary text-[10px] uppercase tracking-wider font-bold mb-1">Total Links</p>
+                            <p className="text-2xl font-black text-white">{urls.length}</p>
                         </div>
-                        {uniqueTags.map(tag => (
+                        <div className="bg-black/20 p-4 rounded-xl border border-glass-border">
+                            <p className="text-tertiary text-[10px] uppercase tracking-wider font-bold mb-1">Total Clicks</p>
+                            <p className="text-2xl font-black text-white">{urls.reduce((acc, curr) => acc + (curr.clicks || 0), 0)}</p>
+                        </div>
+                        <div className="bg-black/20 p-4 rounded-xl border border-glass-border col-span-2 md:col-span-1">
+                            <p className="text-tertiary text-[10px] uppercase tracking-wider font-bold mb-1">Active Tags</p>
+                            <p className="text-2xl font-black text-white">{[...new Set(urls.flatMap(u => u.tags || []))].length}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Filters & Actions */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                    <div className="flex items-center gap-3 overflow-x-auto pb-4 md:pb-0 scrollbar-hide -mx-2 px-2 md:mx-0 md:px-0">
+                        <button
+                            onClick={() => setSelectedTag(null)}
+                            className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${!selectedTag ? 'bg-accent text-white shadow-glow-purple-sm' : 'bg-white/5 text-secondary hover:text-white border border-white/5'}`}
+                        >
+                            All Links
+                        </button>
+                        {[...new Set(urls.flatMap(u => u.tags || []))].map(tag => (
                             <button
                                 key={tag}
-                                onClick={() => setSelectedTag(tag)}
-                                className={`px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-200 whitespace-nowrap border ${selectedTag === tag
-                                    ? "bg-gradient-to-r from-accent to-accent-dark text-white border-accent shadow-glow-purple-sm scale-105"
-                                    : "bg-black/40 text-secondary border-glass-border hover:border-accent/30 hover:text-accent-light"
-                                    }`}
+                                onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+                                className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${selectedTag === tag ? 'bg-accent text-white shadow-glow-purple-sm' : 'bg-white/5 text-secondary hover:text-white border border-white/5'}`}
                             >
                                 {tag}
                             </button>
                         ))}
                     </div>
+
+                    <div className="relative w-full md:w-64">
+                        <input
+                            type="text"
+                            placeholder="Search links..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-black/40 border border-glass-border rounded-xl px-10 py-2.5 text-sm text-white placeholder:text-tertiary focus:outline-none focus:border-accent/40"
+                        />
+                        <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-tertiary" />
+                    </div>
                 </div>
 
-                {urls.length === 0 ? (
-                    <div className="text-center py-32 bg-black/20 rounded-3xl border border-dashed border-glass-border">
-                        <p className="text-secondary text-lg mb-8 font-light">No active links found. Start by creating one.</p>
-                        <a href="/" className="inline-block bg-gradient-to-r from-accent to-accent-dark text-white px-8 py-3 rounded-full font-bold uppercase tracking-wider hover:shadow-glow-purple transition-all duration-200 hover:scale-105">
-                            Create Your First Link
-                        </a>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {filteredUrls.map((url) => (
-                            <div
+                {/* Links Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    {filteredUrls.length > 0 ? (
+                        filteredUrls.map((url) => (
+                            <motion.div
                                 key={url._id}
-                                className="bg-black/20 p-6 rounded-3xl group hover-lift transition-all duration-200 border border-glass-border hover:border-accent/30 hover:shadow-glow-purple-sm relative overflow-hidden"
+                                layout
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="group relative bg-[#0d0d11] hover:bg-[#121218] border border-glass-border hover:border-accent/30 rounded-2xl p-5 sm:p-6 transition-all duration-300 shadow-xl"
                             >
-                                {/* Accent Glow on Hover */}
-                                <div className="absolute -right-4 -top-4 w-24 h-24 bg-accent/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-
-                                <div className="flex flex-col h-full relative z-10">
-                                    {/* Top Row: Favicon/Icon + Stats */}
-                                    <div className="flex items-start justify-between mb-6">
-                                        <div className="w-12 h-12 rounded-2xl bg-black/40 border border-glass-border flex items-center justify-center text-secondary group-hover:text-accent group-hover:border-accent/30 transition-all duration-200">
-                                            <Clock size={20} />
+                                <div className="flex flex-col h-full space-y-4">
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                                                <ExternalLink size={18} className="text-accent sm:w-5 sm:h-5" />
+                                            </div>
+                                            <div className="overflow-hidden">
+                                                <h3 className="text-lg sm:text-xl font-bold text-white mb-0.5 truncate pr-2">/{url.shortUrl}</h3>
+                                                <p className="text-[10px] sm:text-xs text-secondary font-mono truncate max-w-[140px] sm:max-w-[200px]">{url.originalUrl}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 rounded-full border border-glass-border group-hover:border-accent/20 transition-all duration-200">
-                                            <MousePointer2 size={14} className="text-secondary group-hover:text-accent transition-colors" />
-                                            <span className="text-sm font-mono font-medium text-white">{url.clicks}</span>
+                                        <div className="bg-black/40 px-2.5 py-1 rounded-lg border border-glass-border">
+                                            <span className="text-[10px] sm:text-xs font-black text-accent-light">{url.clicks || 0}</span>
                                         </div>
                                     </div>
 
-                                    {/* Link Content */}
-                                    <div className="mb-6 flex-grow">
-                                        <h3 className="text-sm text-secondary font-light mb-1 truncate" title={url.originalUrl}>
-                                            {url.originalUrl}
-                                        </h3>
-                                        <a
-                                            href={`${BACKEND_URL}/${url.shortUrl}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-xl font-bold flex items-center gap-2 hover:text-accent-light transition-colors group/link"
-                                        >
-                                            <span className="animated-gradient-text italic">/{url.shortUrl}</span>
-                                            <ExternalLink size={16} className="opacity-0 -translate-y-1 group-hover/link:opacity-100 group-hover/link:translate-y-0 transition-all text-secondary" />
-                                        </a>
-                                    </div>
-
-                                    {/* Footer: Tags + Actions */}
-                                    <div className="flex items-center justify-between pt-6 border-t border-glass-border">
-                                        <div className="flex gap-2">
-                                            {url.tags && url.tags.length > 0 ? (
-                                                url.tags.slice(0, 2).map(tag => (
-                                                    <span key={tag} className="text-[10px] uppercase tracking-widest font-bold text-secondary bg-black/40 px-2 py-1 rounded-md border border-glass-border">
-                                                        {tag}
-                                                    </span>
-                                                ))
-                                            ) : (
-                                                <span className="text-[10px] uppercase tracking-widest font-bold text-tertiary">No Tags</span>
-                                            )}
-                                            {url.tags?.length > 2 && (
-                                                <span className="text-[10px] font-bold text-secondary">+{url.tags.length - 2}</span>
-                                            )}
+                                    {url.tags && url.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-1.5 min-h-[22px]">
+                                            {url.tags.map(tag => (
+                                                <span key={tag} className="px-2 py-0.5 bg-accent/5 border border-accent/10 rounded text-[9px] font-bold text-accent-light uppercase">
+                                                    {tag}
+                                                </span>
+                                            ))}
                                         </div>
-                                        <div className="flex items-center gap-1">
+                                    )}
+
+                                    <div className="pt-2 flex items-center justify-between border-t border-white/5">
+                                        <p className="text-[9px] sm:text-[10px] font-bold text-tertiary uppercase flex items-center gap-1.5">
+                                            <Calendar size={10} />
+                                            {formatDate(url.createdAt)}
+                                        </p>
+                                        <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => copyToClipboard(url.shortUrl)}
-                                                className="p-2.5 text-secondary hover:text-white hover:bg-white/10 rounded-xl transition-all"
+                                                className="p-2 text-secondary hover:text-accent-light transition-colors"
                                                 title="Copy Link"
                                             >
-                                                <Copy size={18} />
+                                                <Copy size={16} />
                                             </button>
+                                            <a
+                                                href={`${BACKEND_URL}/${url.shortUrl}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-2 text-secondary hover:text-accent-light transition-colors"
+                                                title="Visit Link"
+                                            >
+                                                <ExternalLink size={16} />
+                                            </a>
                                             <button
                                                 onClick={() => handleDelete(url._id)}
                                                 className="p-2.5 text-secondary hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all"
@@ -199,11 +222,18 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
+                            </motion.div>
+                        ))
+                    ) : (
+                        <div className="col-span-full py-16 sm:py-24 text-center">
+                            <p className="text-secondary font-medium mb-6">No links found matching your search.</p>
+                            <Link to="/" className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded-xl font-bold uppercase text-xs tracking-widest hover:shadow-glow-purple-sm transition-all sm:scale-105">
+                                Create your first link
+                            </Link>
+                        </div>
+                    )}
+                </div>
+            </motion.div>
         </div>
     );
 };

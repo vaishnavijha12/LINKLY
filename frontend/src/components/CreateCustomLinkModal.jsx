@@ -105,19 +105,19 @@ const CreateCustomLinkModal = ({ isOpen, onClose, onSuccess }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
-                        className="relative w-full max-w-lg glass-modal overflow-hidden ring-1 ring-glass-border"
+                        className="relative w-full max-w-lg glass-modal overflow-hidden ring-1 ring-glass-border rounded-[28px] md:rounded-[32px]"
                     >
                         {/* Glow Effect */}
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-70"></div>
 
-                        <div className="p-10">
-                            <div className="flex justify-between items-start mb-8">
+                        <div className="p-6 sm:p-10">
+                            <div className="flex justify-between items-start mb-6 sm:mb-8">
                                 <div>
-                                    <h2 className="text-2xl font-semibold text-white tracking-tight">
+                                    <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                                         {createdLink ? "Link Created!" : "Create Custom Link"}
                                     </h2>
-                                    <p className="text-secondary text-sm mt-2">
-                                        {createdLink ? "Your custom link is ready to use." : "Branded, memorable links with control."}
+                                    <p className="text-secondary text-xs sm:text-sm mt-1 sm:mt-2 font-medium opacity-70 leading-relaxed">
+                                        {createdLink ? "Your custom link is ready to use." : "Branded, memorable links with ease."}
                                     </p>
                                 </div>
                                 <button
@@ -131,17 +131,17 @@ const CreateCustomLinkModal = ({ isOpen, onClose, onSuccess }) => {
                             {createdLink ? (
                                 <div className="space-y-6">
                                     {/* Success Result */}
-                                    <div className="bg-accent/10 border border-accent/30 rounded-xl p-6">
-                                        <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-3">Your Custom Link</p>
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex-1 bg-black/40 border border-glass-border rounded-lg px-4 py-3">
+                                    <div className="bg-accent/10 border border-accent/30 rounded-2xl p-4 sm:p-6 text-center">
+                                        <p className="text-[9px] uppercase tracking-[0.2em] text-accent font-black mb-3">Your Branded Link</p>
+                                        <div className="flex flex-col sm:flex-row items-center gap-3">
+                                            <div className="w-full bg-black/40 border border-glass-border rounded-xl px-4 py-3 text-center sm:text-left">
                                                 <p className="text-white font-mono text-sm truncate">
                                                     {BACKEND_URL}/{createdLink}
                                                 </p>
                                             </div>
                                             <button
                                                 onClick={handleCopy}
-                                                className="p-3 bg-accent hover:bg-accent-dark rounded-lg transition-colors flex-shrink-0"
+                                                className="w-full sm:w-auto p-3.5 bg-accent hover:bg-accent-dark rounded-xl transition-all flex items-center justify-center shadow-lg shadow-accent/20 active:scale-95"
                                             >
                                                 {copied ? <Check size={20} className="text-white" /> : <Copy size={20} className="text-white" />}
                                             </button>
@@ -149,59 +149,59 @@ const CreateCustomLinkModal = ({ isOpen, onClose, onSuccess }) => {
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="flex gap-3">
+                                    <div className="flex flex-col sm:flex-row gap-3">
                                         <button
                                             onClick={handleReset}
-                                            className="flex-1 bg-white/5 border border-white/10 text-white font-semibold py-3.5 rounded-xl hover:bg-white/10 transition-all duration-200 flex justify-center items-center gap-2"
+                                            className="w-full sm:flex-1 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-xs py-4 rounded-xl hover:bg-white/10 transition-all duration-200 flex justify-center items-center gap-2"
                                         >
                                             <RefreshCw size={18} />
-                                            Create Another
+                                            Create More
                                         </button>
                                         <button
                                             onClick={handleClose}
-                                            className="flex-1 bg-gradient-to-r from-accent to-accent-dark text-white font-semibold py-3.5 rounded-xl hover:shadow-glow-purple transition-all duration-200"
+                                            className="w-full sm:flex-1 bg-gradient-to-r from-accent to-accent-dark text-white font-black uppercase tracking-widest text-xs py-4 rounded-xl hover:shadow-glow-purple transition-all duration-200"
                                         >
                                             Done
                                         </button>
                                     </div>
                                 </div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-5 sm:gap-6">
                                     <div>
-                                        <label className="block text-xs uppercase tracking-wider text-secondary font-semibold mb-3">Destination URL</label>
+                                        <label className="block text-[10px] uppercase tracking-[0.2em] text-secondary font-black mb-3 opacity-60">Destination URL</label>
                                         <input
                                             type="text"
-                                            placeholder="https://example.com/my-long-url"
+                                            placeholder="https://example.com/long-url"
                                             value={url}
                                             onChange={(e) => setUrl(e.target.value)}
-                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-3.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all shadow-inner"
+                                            className="w-full bg-black/40 border border-glass-border rounded-xl px-5 py-3.5 sm:py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm sm:text-base font-medium"
                                             autoFocus
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-5">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                         <div>
-                                            <label className="block text-xs uppercase tracking-wider text-secondary font-semibold mb-3">Custom Alias <span className="text-accent">*</span></label>
+                                            <label className="block text-[10px] uppercase tracking-[0.2em] text-secondary font-black mb-3 opacity-60">Custom Alias <span className="text-accent">*</span></label>
                                             <div className="relative group">
-                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-tertiary text-sm font-mono group-focus-within:text-secondary transition-colors">/</span>
+                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-accent font-mono text-sm opacity-60">/</span>
                                                 <input
                                                     type="text"
-                                                    placeholder="my-brand"
+                                                    placeholder="my-link"
                                                     value={alias}
                                                     onChange={(e) => setAlias(e.target.value)}
-                                                    className="w-full bg-black/40 border border-glass-border rounded-xl pl-8 pr-4 py-3.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all shadow-inner font-mono text-sm"
+                                                    className="w-full bg-black/40 border border-glass-border rounded-xl pl-8 pr-4 py-3.5 sm:py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all font-mono text-sm"
                                                 />
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="block text-xs uppercase tracking-wider text-secondary font-semibold mb-3">Tag (Optional)</label>
+                                            <label className="block text-[10px] uppercase tracking-[0.2em] text-secondary font-black mb-3 opacity-60">Tag (Optional)</label>
                                             <div className="relative">
                                                 <input
                                                     type="text"
                                                     placeholder="Marketing"
                                                     value={tag}
                                                     onChange={(e) => setTag(e.target.value)}
-                                                    className="w-full bg-black/40 border border-glass-border rounded-xl px-4 py-3.5 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:shadow-glow-purple-sm transition-all shadow-inner text-sm"
+                                                    className="w-full bg-black/40 border border-glass-border rounded-xl px-4 py-3.5 sm:py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm font-medium"
                                                 />
                                             </div>
                                         </div>
@@ -210,9 +210,9 @@ const CreateCustomLinkModal = ({ isOpen, onClose, onSuccess }) => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="mt-4 w-full bg-gradient-to-r from-accent to-accent-dark text-white font-semibold py-4 rounded-xl hover:shadow-glow-purple transition-all duration-200 flex justify-center items-center gap-2 disabled:opacity-50 active:scale-[0.98]"
+                                        className="mt-4 w-full bg-gradient-to-r from-accent to-accent-dark text-white font-black uppercase tracking-widest text-xs py-4 sm:py-5 rounded-xl hover:shadow-glow-purple transition-all duration-200 flex justify-center items-center gap-2 disabled:opacity-50 active:scale-[0.98] shadow-lg shadow-accent/20"
                                     >
-                                        {loading ? <Loader2 className="animate-spin" size={20} /> : "Create Custom Link"}
+                                        {loading ? <Loader2 className="animate-spin" size={20} /> : "Finalize Custom Link"}
                                         {!loading && <ArrowRight size={18} />}
                                     </button>
                                 </form>
