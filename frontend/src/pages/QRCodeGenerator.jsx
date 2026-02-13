@@ -96,9 +96,53 @@ const QRCodeGenerator = () => {
         canvas.height = size;
 
         img.onload = () => {
+            // White background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+
             ctx.drawImage(img, 0, 0, size, size);
 
-            // If download as PNG
+            // Draw logo if present
+            if (showLogo && logoImg) {
+                const logo = new Image();
+                logo.crossOrigin = "anonymous";
+                logo.onload = () => {
+                    const logoSize = size * 0.22; // 22% of QR size
+                    const x = (size - logoSize) / 2;
+                    const y = (size - logoSize) / 2;
+
+                    // White circle background for logo
+                    ctx.beginPath();
+                    ctx.arc(size / 2, size / 2, logoSize / 2 + 2, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+
+                    // Optional: Border
+                    ctx.lineWidth = 0;
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.stroke();
+
+                    // Clip to circle
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(size / 2, size / 2, logoSize / 2, 0, 2 * Math.PI);
+                    ctx.clip();
+                    ctx.drawImage(logo, x, y, logoSize, logoSize);
+                    ctx.restore();
+
+                    triggerDownload();
+                };
+                logo.onerror = () => {
+                    // If logo fails, still download QR
+                    triggerDownload();
+                };
+                logo.src = logoImg;
+            } else {
+                triggerDownload();
+            }
+        };
+
+        const triggerDownload = () => {
             if (extension === 'png') {
                 try {
                     const downloadUrl = canvas.toDataURL("image/png");
@@ -248,22 +292,23 @@ const QRCodeGenerator = () => {
                                 className="w-full"
                             >
                                 <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-2xl mx-auto max-w-[340px] w-full aspect-square flex items-center justify-center mb-8 relative group border-2 border-accent/20">
-                                    <div className="relative">
+                                    <div className="relative flex items-center justify-center">
                                         <QRCodeSVG
                                             id="qr-code"
                                             value={qrValue}
                                             size={260}
                                             level={"H"}
                                             includeMargin={false}
-                                            imageSettings={showLogo && logoImg ? {
-                                                src: logoImg,
-                                                x: undefined,
-                                                y: undefined,
-                                                height: 48,
-                                                width: 48,
-                                                excavate: true,
-                                            } : undefined}
                                         />
+                                        {showLogo && logoImg && (
+                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] bg-white rounded-full p-1 flex items-center justify-center overflow-hidden shadow-xl border border-gray-100 z-10">
+                                                <img
+                                                    src={logoImg}
+                                                    alt="QR Logo"
+                                                    className="w-full h-full object-contain rounded-full"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
