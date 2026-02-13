@@ -1,16 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Link2, LogOut, User, Menu, X } from "lucide-react";
+import { Link2, LogOut, User, Menu, X, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleLogout = () => {
         logout();
+        setShowLogoutModal(false);
         setIsMenuOpen(false);
         navigate("/login");
     };
@@ -51,14 +53,17 @@ const Navbar = () => {
 
                     {user ? (
                         <div className="flex items-center space-x-8 pl-8 border-l border-divider">
-                            <Link to="/profile" className="flex items-center space-x-3 group cursor-pointer">
+                            <button
+                                onClick={() => setShowLogoutModal(true)}
+                                className="flex items-center space-x-3 group cursor-pointer"
+                            >
                                 <div className="w-10 h-10 rounded-full bg-glass-bg border border-glass-border flex items-center justify-center group-hover:border-accent/40 transition-all duration-200 shadow-glass backdrop-blur-glass">
                                     <User size={18} className="text-secondary group-hover:text-accent-light transition-colors" />
                                 </div>
                                 <span className="text-sm font-medium text-secondary group-hover:text-white transition-colors">{user.username}</span>
-                            </Link>
+                            </button>
                             <button
-                                onClick={handleLogout}
+                                onClick={() => setShowLogoutModal(true)}
                                 className="text-secondary hover:text-red-400 transition-all hover:scale-110 transform duration-200"
                                 title="Logout"
                             >
@@ -110,18 +115,23 @@ const Navbar = () => {
 
                                 {user ? (
                                     <div className="flex flex-col items-center space-y-8 w-full pt-8 border-t border-white/10">
-                                        <Link
-                                            to="/profile"
-                                            onClick={() => setIsMenuOpen(false)}
+                                        <button
+                                            onClick={() => {
+                                                setIsMenuOpen(false);
+                                                setShowLogoutModal(true);
+                                            }}
                                             className="flex flex-col items-center space-y-3 group"
                                         >
                                             <div className="w-16 h-16 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center">
                                                 <User size={32} className="text-accent-light" />
                                             </div>
                                             <span className="text-xl font-bold text-white">{user.username}</span>
-                                        </Link>
+                                        </button>
                                         <button
-                                            onClick={handleLogout}
+                                            onClick={() => {
+                                                setIsMenuOpen(false);
+                                                setShowLogoutModal(true);
+                                            }}
                                             className="flex items-center space-x-3 text-red-400 hover:text-red-300 transition-colors text-lg font-bold uppercase tracking-widest"
                                         >
                                             <LogOut size={20} />
@@ -148,6 +158,47 @@ const Navbar = () => {
                                 )}
                             </div>
                         </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Logout Confirmation Modal */}
+                <AnimatePresence>
+                    {showLogoutModal && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setShowLogoutModal(false)}
+                                className="absolute inset-0 bg-black/60 backdrop-blur-md"
+                            />
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                className="relative w-full max-w-sm bg-glass-bg backdrop-blur-glass-lg border border-glass-border rounded-3xl p-8 shadow-2xl text-center"
+                            >
+                                <div className="w-16 h-16 bg-red-400/10 border border-red-400/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <AlertTriangle size={32} className="text-red-400" />
+                                </div>
+                                <h3 className="text-xl font-bold text-white mb-2">Confirm Logout</h3>
+                                <p className="text-secondary text-sm mb-8">Are you sure you want to exit your workspace?</p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button
+                                        onClick={() => setShowLogoutModal(false)}
+                                        className="py-3 rounded-xl border border-glass-border text-white text-sm font-bold uppercase tracking-wider hover:bg-white/5 transition-colors"
+                                    >
+                                        Stay
+                                    </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="py-3 rounded-xl bg-red-500 text-white text-sm font-bold uppercase tracking-wider hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </div>
                     )}
                 </AnimatePresence>
             </div>
