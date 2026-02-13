@@ -192,7 +192,6 @@ const Register = () => {
                                 onError={() => toast.error("Google Login Failed")}
                                 theme="filled_black"
                                 shape="pill"
-                                width="100%"
                             />
                         </div>
                     </div>
