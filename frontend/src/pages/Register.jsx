@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
 import api from "../utils/api";
@@ -124,13 +124,41 @@ const Register = () => {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className={`w-full bg-black/40 border ${usernameStatus.available === false ? 'border-red-500/50' : usernameStatus.available === true ? 'border-green-500/50' : 'border-glass-border'} rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm font-medium`}
+                                className={`w-full bg-black/40 border ${usernameStatus.available === false ? 'border-red-500/50' : usernameStatus.available === true ? 'border-green-500/50' : 'border-glass-border'} rounded-xl px-5 py-4 text-white placeholder:text-tertiary focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all text-sm font-medium pr-16`}
                                 placeholder="Username"
                                 required
                             />
-                            {usernameStatus.checking && <div className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin w-3.5 h-3.5 border-2 border-accent border-t-transparent rounded-full"></div>}
-                            {usernameStatus.available === true && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500 text-[10px] font-black">AVAILABLE</div>}
-                            {usernameStatus.available === false && <div className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-[10px] font-black">TAKEN</div>}
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center h-full">
+                                <AnimatePresence mode="wait">
+                                    {usernameStatus.checking ? (
+                                        <motion.div
+                                            key="checking"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            className="w-4 h-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin"
+                                        />
+                                    ) : usernameStatus.available === true ? (
+                                        <motion.span
+                                            key="available"
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="text-green-400 text-[9px] font-black tracking-widest bg-green-500/10 px-2 py-1 rounded"
+                                        >
+                                            OK
+                                        </motion.span>
+                                    ) : usernameStatus.available === false ? (
+                                        <motion.span
+                                            key="taken"
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="text-red-400 text-[9px] font-black tracking-widest bg-red-500/10 px-2 py-1 rounded"
+                                        >
+                                            TAKEN
+                                        </motion.span>
+                                    ) : null}
+                                </AnimatePresence>
+                            </div>
                         </div>
 
                         <div className="relative">
