@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { QRCodeCanvas } from "qrcode.react";
-import { Download, Link as LinkIcon, RefreshCw, QrCode, Upload } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { Download, Link as LinkIcon, RefreshCw, QrCode, Upload, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 
@@ -82,78 +82,41 @@ const QRCodeGenerator = () => {
     };
 
     const downloadQR = async (extension) => {
-        const canvas = document.getElementById("qr-canvas");
-        if (!canvas) return;
+        const svg = document.getElementById("qr-code");
+        if (!svg) return;
 
-        // Create a temporary canvas to draw the composite image
-        const tempCanvas = document.createElement("canvas");
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const ctx = tempCanvas.getContext("2d");
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
 
-        // Draw the QR code
-        ctx.drawImage(canvas, 0, 0);
+        // High resolution for clear download
+        const size = 600;
+        canvas.width = size;
+        canvas.height = size;
 
-        // If logo is present, draw it on top
-        if (showLogo && logoImg) {
-            await new Promise((resolve) => {
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-                img.src = logoImg;
-                img.onload = () => {
-                    const logoSize = canvas.width * 0.22;
-                    const logoX = (canvas.width - logoSize) / 2;
-                    const logoY = (canvas.height - logoSize) / 2;
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, size, size);
 
-                    ctx.beginPath();
-                    const radius = logoSize / 2;
-                    const centerX = canvas.width / 2;
-                    const centerY = canvas.height / 2;
+            // If download as PNG
+            if (extension === 'png') {
+                try {
+                    const downloadUrl = canvas.toDataURL("image/png");
+                    const link = document.createElement("a");
+                    link.href = downloadUrl;
+                    link.download = `linkly-qr.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    toast.success(`Downloaded as PNG`);
+                } catch (e) {
+                    console.error(e);
+                    toast.error("Failed to download");
+                }
+            }
+        };
 
-                    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-                    ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-                    ctx.fill();
-
-                    ctx.lineWidth = canvas.width * 0.004;
-                    ctx.strokeStyle = "#f3f4f6";
-                    ctx.stroke();
-
-                    const padding = logoSize * 0.15;
-                    const innerSize = logoSize - (padding * 2);
-                    const innerX = logoX + padding;
-                    const innerY = logoY + padding;
-
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(centerX, centerY, innerSize / 2, 0, 2 * Math.PI, false);
-                    ctx.clip();
-
-                    ctx.drawImage(img, innerX, innerY, innerSize, innerSize);
-                    ctx.restore();
-
-                    resolve();
-                };
-                img.onerror = () => {
-                    console.error("Failed to load logo for download");
-                    resolve();
-                };
-            });
-        }
-
-        let downloadUrl;
-        if (extension === 'png') {
-            downloadUrl = tempCanvas.toDataURL("image/png");
-        } else {
-            downloadUrl = tempCanvas.toDataURL("image/png");
-        }
-
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        link.download = `linkly-qr.${extension}`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        toast.success(`Downloaded as ${extension.toUpperCase()}`);
+        img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
     };
 
     return (
@@ -286,22 +249,21 @@ const QRCodeGenerator = () => {
                             >
                                 <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-2xl mx-auto max-w-[340px] w-full aspect-square flex items-center justify-center mb-8 relative group border-2 border-accent/20">
                                     <div className="relative">
-                                        <QRCodeCanvas
-                                            id="qr-canvas"
+                                        <QRCodeSVG
+                                            id="qr-code"
                                             value={qrValue}
                                             size={260}
                                             level={"H"}
                                             includeMargin={false}
+                                            imageSettings={showLogo && logoImg ? {
+                                                src: logoImg,
+                                                x: undefined,
+                                                y: undefined,
+                                                height: 48,
+                                                width: 48,
+                                                excavate: true,
+                                            } : undefined}
                                         />
-                                        {showLogo && logoImg && (
-                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] bg-white rounded-full p-1 flex items-center justify-center overflow-hidden shadow-xl border border-gray-100">
-                                                <img
-                                                    src={logoImg}
-                                                    alt="QR Logo"
-                                                    className="w-full h-full object-contain rounded-full"
-                                                />
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
 
