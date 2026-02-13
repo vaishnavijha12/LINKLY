@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import QRCodeGenerator from "./pages/QRCodeGenerator";
 import Tags from "./pages/Tags";
+import Profile from "./pages/Profile";
 import Redirects from "./pages/Redirects";
 import Footer from "./components/Footer";
 import HelpPanel from "./components/HelpPanel";
@@ -67,6 +68,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <Redirects />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
                             </ProtectedRoute>
                         }
                     />

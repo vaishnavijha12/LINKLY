@@ -53,15 +53,15 @@ const Navbar = () => {
 
                     {user ? (
                         <div className="flex items-center space-x-8 pl-8 border-l border-divider">
-                            <button
-                                onClick={() => setShowLogoutModal(true)}
+                            <Link
+                                to="/profile"
                                 className="flex items-center space-x-3 group cursor-pointer"
                             >
                                 <div className="w-10 h-10 rounded-full bg-glass-bg border border-glass-border flex items-center justify-center group-hover:border-accent/40 transition-all duration-200 shadow-glass backdrop-blur-glass">
                                     <User size={18} className="text-secondary group-hover:text-accent-light transition-colors" />
                                 </div>
                                 <span className="text-sm font-medium text-secondary group-hover:text-white transition-colors">{user.username}</span>
-                            </button>
+                            </Link>
                             <button
                                 onClick={() => setShowLogoutModal(true)}
                                 className="text-secondary hover:text-red-400 transition-all hover:scale-110 transform duration-200"
@@ -115,18 +115,16 @@ const Navbar = () => {
 
                                 {user ? (
                                     <div className="flex flex-col items-center space-y-8 w-full pt-8 border-t border-white/10">
-                                        <button
-                                            onClick={() => {
-                                                setIsMenuOpen(false);
-                                                setShowLogoutModal(true);
-                                            }}
+                                        <Link
+                                            to="/profile"
+                                            onClick={() => setIsMenuOpen(false)}
                                             className="flex flex-col items-center space-y-3 group"
                                         >
                                             <div className="w-16 h-16 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center">
                                                 <User size={32} className="text-accent-light" />
                                             </div>
                                             <span className="text-xl font-bold text-white">{user.username}</span>
-                                        </button>
+                                        </Link>
                                         <button
                                             onClick={() => {
                                                 setIsMenuOpen(false);
