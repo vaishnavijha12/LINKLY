@@ -20,16 +20,22 @@ const Register = () => {
     const [strength, setStrength] = useState({ score: 0, label: "", color: "bg-tertiary" });
 
     const handleGoogleSuccess = async (credentialResponse) => {
+        if (loading) return; // Prevent multiple clicks
         setLoading(true);
+        // Show immediate feedback
+        const loadingToast = toast.loading("Verifying...", { id: "google-auth" });
+
         try {
             await googleLogin(credentialResponse.credential);
-            toast.success("Signed in with Google");
-            navigate("/dashboard");
+            toast.success("Signed in successfully", { id: "google-auth" });
+            navigate("/", { replace: true }); // Instant redirect with replace to avoid history stack issues
         } catch (error) {
-            toast.error("Google login failed");
-        } finally {
+            console.error("Google Login Error:", error);
+            toast.error("Google login failed", { id: "google-auth" });
             setLoading(false);
         }
+        // Note: We don't set loading(false) on success because we are navigating away 
+        // and want to prevent any further interaction until the new page loads.
     };
 
     const checkPasswordStrength = (pass) => {

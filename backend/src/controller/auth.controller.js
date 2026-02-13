@@ -186,34 +186,31 @@ export const googleLogin = async (req, res) => {
 
         const { sub: googleId, email, name, picture } = ticket.getPayload();
 
+        // Optimized: Try to find user by googleId or email
         let user = await User.findOne({
             $or: [{ googleId }, { email }]
         });
 
         if (!user) {
-            // Create new user if not exists
-            // Generate a random username if name is taken
-            let baseUsername = name.replace(/\s+/g, '').toLowerCase().substring(0, 10);
-            let finalUsername = baseUsername;
-            let counter = 1;
-
-            while (await User.findOne({ username: finalUsername })) {
-                finalUsername = `${baseUsername}${counter}`;
-                counter++;
-            }
+            // Create new user: Generate unique username with random suffix to avoid loops
+            const baseUsername = name.replace(/\s+/g, '').toLowerCase().substring(0, 10);
+            const randomSuffix = Math.random().toString(36).substring(2, 6);
+            const finalUsername = `${baseUsername}${randomSuffix}`;
 
             user = new User({
                 username: finalUsername,
                 email,
                 googleId,
+                // picture - if you want to save it
             });
             await user.save();
         } else if (!user.googleId) {
-            // Link existing account to Google
+            // Link existing account to Google if not already linked
             user.googleId = googleId;
             await user.save();
         }
 
+        // Generate token immediately
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1d",
         });
@@ -227,6 +224,7 @@ export const googleLogin = async (req, res) => {
             },
         });
     } catch (error) {
+        console.error("Google Auth Error:", error);
         res.status(500).json({ message: "Google Auth error", error: error.message });
     }
 };

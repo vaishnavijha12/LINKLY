@@ -14,14 +14,17 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
 
     const handleGoogleSuccess = async (credentialResponse) => {
+        if (loading) return;
         setLoading(true);
+        const loadingToast = toast.loading("Verifying...", { id: "google-auth" });
+
         try {
             await googleLogin(credentialResponse.credential);
-            toast.success("Signed in with Google");
-            navigate("/dashboard");
+            toast.success("Welcome back!", { id: "google-auth" });
+            navigate("/", { replace: true });
         } catch (error) {
-            toast.error("Google login failed");
-        } finally {
+            console.error("Google Login Error:", error);
+            toast.error("Google login failed", { id: "google-auth" });
             setLoading(false);
         }
     };
@@ -32,7 +35,7 @@ const Login = () => {
         try {
             await login(email, password);
             toast.success("Welcome back.");
-            navigate("/dashboard");
+            navigate("/");
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed");
         } finally {
@@ -52,7 +55,7 @@ const Login = () => {
 
                 <div className="mb-10 text-center relative z-10">
                     <div className="text-[10px] text-secondary uppercase tracking-[0.2em] mb-4 font-bold opacity-70">WELCOME BACK</div>
-                    <h2 className="text-3xl sm:text-4xl font-black mb-2 text-white tracking-tight">Sign In.</h2>
+                    <h2 className="text-3xl sm:text-4xl font-black mb-2 text-white tracking-tight">Login.</h2>
                     <p className="text-secondary text-sm font-medium opacity-80">Access your Linkly workspace</p>
                 </div>
 
@@ -96,7 +99,7 @@ const Login = () => {
                             disabled={loading}
                             className="w-full bg-gradient-to-r from-accent to-accent-dark text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:shadow-glow-purple-sm transition-all flex items-center justify-center gap-3 group/btn"
                         >
-                            <span className="relative z-10">{loading ? "Verifying..." : "Enter Dashboard"}</span>
+                            <span className="relative z-10">{loading ? "Verifying..." : "Login"}</span>
                             {!loading && <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform relative z-10" />}
                         </button>
 
