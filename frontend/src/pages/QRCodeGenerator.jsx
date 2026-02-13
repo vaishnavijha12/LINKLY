@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { Download, Link as LinkIcon, RefreshCw, QrCode, Upload, X } from "lucide-react";
+import { Download, Link as LinkIcon, RefreshCw, QrCode, Upload, X, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 
