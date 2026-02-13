@@ -1,13 +1,15 @@
 import { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import api, { BACKEND_URL } from "../utils/api";
 import { toast } from "react-hot-toast";
-import { ExternalLink, Copy, Clock, MousePointer2, Trash2, Tag, Filter } from "lucide-react";
+import { motion } from "framer-motion";
+import { ExternalLink, Copy, Clock, MousePointer2, Trash2, Tag, Filter, Calendar, Search } from "lucide-react";
 
 const Dashboard = () => {
     const [urls, setUrls] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedTag, setSelectedTag] = useState("All");
+    const [searchTerm, setSearchTerm] = useState("");
     const location = useLocation();
     const tagsSectionRef = useRef(null);
 
@@ -70,14 +72,12 @@ const Dashboard = () => {
 
     // Filter Logic
     const uniqueTags = ["All", ...new Set(urls.flatMap(url => url.tags || []))];
-    const filteredUrls = selectedTag === "All"
-    // Filter Logic (updated)
     const filteredUrls = urls.filter(url => {
-        const matchesTag = selectedTag ? url.tags?.includes(selectedTag) : true;
+        const matchesTag = selectedTag && selectedTag !== "All" ? url.tags?.includes(selectedTag) : true;
         const matchesSearch = searchTerm
-            ? url.originalUrl.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            url.shortUrl.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            url.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+            ? (url.originalUrl?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                url.shortUrl?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                url.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
             : true;
         return matchesTag && matchesSearch;
     });
