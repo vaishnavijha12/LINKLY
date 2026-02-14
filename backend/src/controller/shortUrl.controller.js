@@ -103,7 +103,7 @@ export const deleteShortUrl = async (req, res) => {
             return res.status(404).json({ message: "URL not found" });
         }
 
-        if (url.user.toString() !== req.user.id) {
+        if (url.user && url.user.toString() !== req.user.id) {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
@@ -111,7 +111,7 @@ export const deleteShortUrl = async (req, res) => {
         res.status(200).json({ message: "URL deleted successfully" });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Server error" });
+        res.status(500).json({ message: "Server error", error: err.message });
     }
 };
 
@@ -126,7 +126,7 @@ export const updateShortUrl = async (req, res) => {
             return res.status(404).json({ message: "URL not found" });
         }
 
-        if (url.user.toString() !== req.user.id) {
+        if (url.user && url.user.toString() !== req.user.id) {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
@@ -139,6 +139,6 @@ export const updateShortUrl = async (req, res) => {
         res.status(200).json(url);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Server error" });
+        res.status(500).json({ message: "Server error", error: err.message });
     }
 };
